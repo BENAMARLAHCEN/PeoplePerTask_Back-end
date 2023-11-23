@@ -1,0 +1,653 @@
+-- Creating the 'peoplepertask' database if it doesn't exist and using it
+CREATE DATABASE IF NOT EXISTS peoplepertask ;
+USE peoplepertask;
+
+-- Creating the 'Users' table to store user information
+
+CREATE TABLE IF NOT EXISTS Users(
+ID_user INT NOT NULL AUTO_INCREMENT,
+user_name VARCHAR(25) NOT NULL,
+userPassword VARCHAR(15) NOT NULL,
+email VARCHAR(50) NOT NULL,
+birthday DATE,
+City VARCHAR(255),
+PostalCode VARCHAR(5),
+PRIMARY KEY (ID_user)
+);
+
+-- Inserting sample data into the 'users' table
+
+INSERT INTO users(user_name,userPassword,email,birthday,City,PostalCode)
+VALUES ('lahcen ben','ben2020','lahcen.ben3@gmail.com','2002-02-02','Alnif','52425'),
+('abdlghani','lghani99','ayt.tamghart@gmail.com','2001-01-01','tinghir','54425'),
+('Rached','dhijd34','duiu.ben3@gmail.com','2000-12-22','Ouarzazat','59825'),
+('Morad','enihd3','morad.oziki@gmail.com','2001-04-02','Alnif','52245'),
+('Nasr','judfo6-','lahcen.lonis@gmail.com','2001-10-07','Rabat','34565');
+
+-- CRUD operations on the 'Users' table
+
+-- Updating the email of a user with ID_user = 3
+UPDATE users
+SET email = 'rachid.zazate@gmail.com'
+WHERE ID_user = 3;
+
+-- Deleting a user with ID_user = 5
+DELETE FROM users WHERE ID_user = 5;
+
+ALTER TABLE users
+RENAME COLUMN user_name TO userName;
+
+-- Creating the 'freelance' table to store freelancer details
+
+CREATE TABLE IF NOT EXISTS freelance(
+id INT NOT NULL AUTO_INCREMENT,
+FreelanceName VARCHAR(25) NOT NULL,
+skills VARCHAR(100),
+ID_user INT NOT NULL UNIQUE,
+PRIMARY KEY (id),
+FOREIGN KEY (ID_user) REFERENCES users(ID_user) ON DELETE CASCADE
+);
+
+-- Inserting sample data into the 'freelance' table
+
+INSERT INTO freelance(FreelanceName,skills,ID_user)
+VALUES ('darkman','ux/ui',4),
+('mikehurley', 'Web Development, Graphic Design', 1),
+('weblinkbuilding', 'Content Writing, SEO', 2),
+('GINSAN', 'Mobile App Development, UI/UX Design', 3),
+('guhgèu', 'SEO and Web Design Experts', 5);
+
+
+-- Creating the 'testimonials' table to store user testimonials
+
+CREATE TABLE IF NOT EXISTS testimonials(
+id INT NOT NULL AUTO_INCREMENT,
+Commentaire VARCHAR(200) NOT NULL,
+ID_user INT,
+PRIMARY KEY (id),
+FOREIGN KEY (ID_user) REFERENCES users(ID_user) ON DELETE SET NULL
+);
+
+
+-- Inserting sample data into the 'testimonials' table
+
+INSERT INTO testimonials(Commentaire,ID_user)
+VALUES 
+    ('Great work!', 1),
+    ('Very professional.', 2),
+    ('Highly recommended.', 3),
+    ('Highly recommended freelancer.', 4),
+    ('Great work ethics.', 4),
+    ('Very professional work.', 1);
+
+
+-- Creating the 'categories' table to store project categories
+
+CREATE TABLE IF NOT EXISTS categories(
+id INT NOT NULL AUTO_INCREMENT,
+CategoryName VARCHAR(30) NOT NULL,
+PRIMARY KEY (id)
+);
+
+
+-- Inserting sample data into the 'categories' table
+
+INSERT INTO categories(CategoryName)
+VALUES 
+    ('Technology'),
+    ('Writing'),
+    ('Design'),
+	 ('Social Media'),
+    ('Illustration'),
+    ('Content Creation'),
+    ('UI/UX Design');
+
+
+-- Creating the 'sub_categories' table to store sub-categories linked to main categories
+
+CREATE TABLE IF NOT EXISTS sub_categories(
+id INT NOT NULL AUTO_INCREMENT,
+subName VARCHAR(30) NOT NULL,
+id_category INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (id_category) REFERENCES categories(id) ON DELETE CASCADE
+);
+
+-- Inserting sample data into the 'sub_categories' table
+
+INSERT INTO sub_categories(subName,id_category)
+VALUES
+    ('Web Development', 1),
+    ('Content Creation', 2),
+    ('Graphic Design', 3),
+    ('Music Production', 4),
+    ('Project Planning', 5),
+    ('Social Media Management', 2),
+    ('Illustration', 3),
+    ('Content Writing', 6);
+    
+
+-- Creating the 'projects' table to store project details
+
+CREATE TABLE IF NOT EXISTS projects(
+id INT NOT NULL AUTO_INCREMENT,
+title VARCHAR(50) NOT NULL,
+project_description VARCHAR(200) NOT NULL,
+id_categorie INT,
+id_sub_category INT,
+ID_user INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (id_categorie) REFERENCES categories(id) ON DELETE SET NULL,
+FOREIGN KEY (id_sub_category) REFERENCES sub_categories(id) ON DELETE SET NULL,
+FOREIGN KEY (ID_user) REFERENCES users(ID_user) ON DELETE CASCADE
+);
+
+
+-- Inserting sample data into the 'projects' table
+
+INSERT INTO projects(title,project_description,id_categorie,id_sub_category,ID_user)
+VALUES 
+    ('E-commerce Website', 'Develop an online store', 1, 1, 1),
+    ('Blog Writing', 'Write SEO optitestimonialstestimonialsmized articles', 2, 2, 2),
+    ('Logo Design', 'Create a company logo', 3, 3, 3),
+    ('Data Analysis Report', 'Analyze and present data in a comprehensive report', 1, 3, 3),
+    ('Professional Photography Session', 'Capture professional photos for a portfolio', 6, 3, 1),
+    ('Business Strategy Consulting', 'Provide strategic advice for business growth', 3, 1, 5),
+    ('Compose Original Music', 'Create original music track for a video game', 2, 4, 3),
+    ('Project Management Assistance', 'Assist in project planning and coordination', 4, 5, 2),
+    ('Social Media Content Creation', 'Create engaging content for social media platforms', 3, 5, 1),
+    ('Illustrate Children''s Book', 'Illustrate characters and scenes for a book', 3, 5, 3);
+
+
+-- Creating the 'Offers' table to store offers details
+
+CREATE TABLE IF NOT EXISTS Offers(
+id INT NOT NULL AUTO_INCREMENT,
+amount DECIMAL(10, 2) NOT NULL,
+deadline DATE,
+ID_Freelance INT NOT NULL,
+Id_project INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (ID_Freelance) REFERENCES freelance(id) ON DELETE CASCADE,
+FOREIGN KEY (Id_project) REFERENCES projects(id)
+);
+
+-- Inserting sample data into the 'Offers' table
+
+INSERT INTO offers(amount, deadline, ID_Freelance, Id_project)
+VALUES 
+    (800.00, '2023-12-31', 1, 1),
+    (400.00, '2023-12-20', 2, 2),
+    (600.00, '2023-12-25', 3, 3),
+    (300.00, '2023-12-18', 4, 4),
+    (1200.00, '2023-12-28', 5, 5);
+
+
+-- phpMyAdmin SQL Dump
+-- version 4.1.14
+-- http://www.phpmyadmin.net
+--
+-- Client :  127.0.0.1
+-- Généré le :  Mer 28 Janvier 2015 à 23:12
+-- Version du serveur :  5.6.17
+-- Version de PHP :  5.5.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `region`
+--
+
+CREATE TABLE IF NOT EXISTS `region` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `region` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+--
+-- Contenu de la table `region`
+--
+
+INSERT INTO `region` (`id`, `region`) VALUES
+(1, 'Tanger-Tétouan-Al Hoceïma'),
+(2, 'l''Oriental'),
+(3, 'Fès-Meknès'),
+(4, 'Rabat-Salé-Kénitra'),
+(5, 'Béni Mellal-Khénifra'),
+(6, 'Casablanca-Settat'),
+(7, 'Marrakech-Safi'),
+(8, 'Drâa-Tafilalet'),
+(9, 'Souss-Massa'),
+(10, 'Guelmim-Oued Noun'),
+(11, 'Laâyoune-Sakia El Hamra'),
+(12, 'Dakhla-Oued Ed Dahab');
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ville`
+--
+
+CREATE TABLE IF NOT EXISTS `ville` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ville` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `region` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`region`) REFERENCES region(`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=403 ;
+
+
+--
+-- Contenu de la table `ville`
+--
+
+INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
+(1, 'Aïn Harrouda', 6),
+(2, 'Ben Yakhlef', 6),
+(3, 'Bouskoura', 6),
+(4, 'Casablanca', 6),
+(5, 'Médiouna', 6),
+(6, 'Mohammadia', 6),
+(7, 'Tit Mellil', 6),
+(8, 'Ben Yakhlef', 6),
+(9, 'Bejaâd', 5),
+(10, 'Ben Ahmed', 6),
+(11, 'Benslimane', 6),
+(12, 'Berrechid', 6),
+(13, 'Boujniba', 5),
+(14, 'Boulanouare', 5),
+(15, 'Bouznika', 6),
+(16, 'Deroua', 6),
+(17, 'El Borouj', 6),
+(18, 'El Gara', 6),
+(19, 'Guisser', 6),
+(20, 'Hattane', 5),
+(21, 'Khouribga', 5),
+(22, 'Loulad', 6),
+(23, 'Oued Zem', 5),
+(24, 'Oulad Abbou', 6),
+(25, 'Oulad H''Riz Sahel', 6),
+(26, 'Oulad M''rah', 6),
+(27, 'Oulad Saïd', 6),
+(28, 'Oulad Sidi Ben Daoud', 6),
+(29, 'Ras El Aïn', 6),
+(30, 'Settat', 6),
+(31, 'Sidi Rahhal Chataï', 6),
+(32, 'Soualem', 6),
+(33, 'Azemmour', 6),
+(34, 'Bir Jdid', 6),
+(35, 'Bouguedra', 7),
+(36, 'Echemmaia', 7),
+(37, 'El Jadida', 6),
+(38, 'Hrara', 7),
+(39, 'Ighoud', 7),
+(40, 'Jamâat Shaim', 7),
+(41, 'Jorf Lasfar', 6),
+(42, 'Khemis Zemamra', 6),
+(43, 'Laaounate', 6),
+(44, 'Moulay Abdallah', 6),
+(45, 'Oualidia', 6),
+(46, 'Oulad Amrane', 6),
+(47, 'Oulad Frej', 6),
+(48, 'Oulad Ghadbane', 6),
+(49, 'Safi', 7),
+(50, 'Sebt El Maârif', 6),
+(51, 'Sebt Gzoula', 7),
+(52, 'Sidi Ahmed', 7),
+(53, 'Sidi Ali Ban Hamdouche', 6),
+(54, 'Sidi Bennour', 6),
+(55, 'Sidi Bouzid', 6),
+(56, 'Sidi Smaïl', 6),
+(57, 'Youssoufia', 7),
+(58, 'Fès', 3),
+(59, 'Aïn Cheggag', 3),
+(60, 'Bhalil', 3),
+(61, 'Boulemane', 3),
+(62, 'El Menzel', 3),
+(63, 'Guigou', 3),
+(64, 'Imouzzer Kandar', 3),
+(65, 'Imouzzer Marmoucha', 3),
+(66, 'Missour', 3),
+(67, 'Moulay Yaâcoub', 3),
+(68, 'Ouled Tayeb', 3),
+(69, 'Outat El Haj', 3),
+(70, 'Ribate El Kheir', 3),
+(71, 'Séfrou', 3),
+(72, 'Skhinate', 3),
+(73, 'Tafajight', 3),
+(74, 'Arbaoua', 4),
+(75, 'Aïn Dorij', 1),
+(76, 'Dar Gueddari', 4),
+(77, 'Had Kourt', 4),
+(78, 'Jorf El Melha', 4),
+(79, 'Kénitra', 4),
+(80, 'Khenichet', 4),
+(81, 'Lalla Mimouna', 4),
+(82, 'Mechra Bel Ksiri', 4),
+(83, 'Mehdia', 4),
+(84, 'Moulay Bousselham', 4),
+(85, 'Sidi Allal Tazi', 4),
+(86, 'Sidi Kacem', 4),
+(87, 'Sidi Slimane', 4),
+(88, 'Sidi Taibi', 4),
+(89, 'Sidi Yahya El Gharb', 4),
+(90, 'Souk El Arbaa', 4),
+(91, 'Akka', 9),
+(92, 'Assa', 10),
+(93, 'Bouizakarne', 10),
+(94, 'El Ouatia', 10),
+(95, 'Es-Semara', 11),
+(96, 'Fam El Hisn', 9),
+(97, 'Foum Zguid', 9),
+(98, 'Guelmim', 10),
+(99, 'Taghjijt', 10),
+(100, 'Tan-Tan', 10),
+(101, 'Tata', 9),
+(102, 'Zag', 10),
+(103, 'Marrakech', 7),
+(104, 'Ait Daoud', 7),
+(115, 'Amizmiz', 7),
+(116, 'Assahrij', 7),
+(117, 'Aït Ourir', 7),
+(118, 'Ben Guerir', 7),
+(119, 'Chichaoua', 7),
+(120, 'El Hanchane', 7),
+(121, 'El Kelaâ des Sraghna', 7),
+(122, 'Essaouira', 7),
+(123, 'Fraïta', 7),
+(124, 'Ghmate', 7),
+(125, 'Ighounane', 8),
+(126, 'Imintanoute', 7),
+(127, 'Kattara', 7),
+(128, 'Lalla Takerkoust', 7),
+(129, 'Loudaya', 7),
+(130, 'Lâattaouia', 7),
+(131, 'Moulay Brahim', 7),
+(132, 'Mzouda', 7),
+(133, 'Ounagha', 7),
+(134, 'Sid L''Mokhtar', 7),
+(135, 'Sid Zouin', 7),
+(136, 'Sidi Abdallah Ghiat', 7),
+(137, 'Sidi Bou Othmane', 7),
+(138, 'Sidi Rahhal', 7),
+(139, 'Skhour Rehamna', 7),
+(140, 'Smimou', 7),
+(141, 'Tafetachte', 7),
+(142, 'Tahannaout', 7),
+(143, 'Talmest', 7),
+(144, 'Tamallalt', 7),
+(145, 'Tamanar', 7),
+(146, 'Tamansourt', 7),
+(147, 'Tameslouht', 7),
+(148, 'Tanalt', 9),
+(149, 'Zeubelemok', 7),
+(150, 'Meknès‎', 3),
+(151, 'Khénifra', 5),
+(152, 'Agourai', 3),
+(153, 'Ain Taoujdate', 3),
+(154, 'MyAliCherif', 8),
+(155, 'Rissani', 8),
+(156, 'Amalou Ighriben', 5),
+(157, 'Aoufous', 8),
+(158, 'Arfoud', 8),
+(159, 'Azrou', 3),
+(160, 'Aïn Jemaa', 3),
+(161, 'Aïn Karma', 3),
+(162, 'Aïn Leuh', 3),
+(163, 'Aït Boubidmane', 3),
+(164, 'Aït Ishaq', 5),
+(165, 'Boudnib', 8),
+(166, 'Boufakrane', 3),
+(167, 'Boumia', 8),
+(168, 'El Hajeb', 3),
+(169, 'Elkbab', 5),
+(170, 'Er-Rich', 5),
+(171, 'Errachidia', 8),
+(172, 'Gardmit', 8),
+(173, 'Goulmima', 8),
+(174, 'Gourrama', 8),
+(175, 'Had Bouhssoussen', 5),
+(176, 'Haj Kaddour', 3),
+(177, 'Ifrane', 3),
+(178, 'Itzer', 8),
+(179, 'Jorf', 8),
+(180, 'Kehf Nsour', 5),
+(181, 'Kerrouchen', 5),
+(182, 'M''haya', 3),
+(183, 'M''rirt', 5),
+(184, 'Midelt', 8),
+(185, 'Moulay Ali Cherif', 8),
+(186, 'Moulay Bouazza', 5),
+(187, 'Moulay Idriss Zerhoun', 3),
+(188, 'Moussaoua', 3),
+(189, 'N''Zalat Bni Amar', 3),
+(190, 'Ouaoumana', 5),
+(191, 'Oued Ifrane', 3),
+(192, 'Sabaa Aiyoun', 3),
+(193, 'Sebt Jahjouh', 3),
+(194, 'Sidi Addi', 3),
+(195, 'Tichoute', 8),
+(196, 'Tighassaline', 5),
+(197, 'Tighza', 5),
+(198, 'Timahdite', 3),
+(199, 'Tinejdad', 8),
+(200, 'Tizguite', 3),
+(201, 'Toulal', 3),
+(202, 'Tounfite', 8),
+(203, 'Zaouia d''Ifrane', 3),
+(204, 'Zaïda', 8),
+(205, 'Ahfir', 2),
+(206, 'Aklim', 2),
+(207, 'Al Aroui', 2),
+(208, 'Aïn Bni Mathar', 2),
+(209, 'Aïn Erreggada', 2),
+(210, 'Ben Taïeb', 2),
+(211, 'Berkane', 2),
+(212, 'Bni Ansar', 2),
+(213, 'Bni Chiker', 2),
+(214, 'Bni Drar', 2),
+(215, 'Bni Tadjite', 2),
+(216, 'Bouanane', 2),
+(217, 'Bouarfa', 2),
+(218, 'Bouhdila', 2),
+(219, 'Dar El Kebdani', 2),
+(220, 'Debdou', 2),
+(221, 'Douar Kannine', 2),
+(222, 'Driouch', 2),
+(223, 'El Aïoun Sidi Mellouk', 2),
+(224, 'Farkhana', 2),
+(225, 'Figuig', 2),
+(226, 'Ihddaden', 2),
+(227, 'Jaâdar', 2),
+(228, 'Jerada', 2),
+(229, 'Kariat Arekmane', 2),
+(230, 'Kassita', 2),
+(231, 'Kerouna', 2),
+(232, 'Laâtamna', 2),
+(233, 'Madagh', 2),
+(234, 'Midar', 2),
+(235, 'Nador', 2),
+(236, 'Naima', 2),
+(237, 'Oued Heimer', 2),
+(238, 'Oujda', 2),
+(239, 'Ras El Ma', 2),
+(240, 'Saïdia', 2),
+(241, 'Selouane', 2),
+(242, 'Sidi Boubker', 2),
+(243, 'Sidi Slimane Echcharaa', 2),
+(244, 'Talsint', 2),
+(245, 'Taourirt', 2),
+(246, 'Tendrara', 2),
+(247, 'Tiztoutine', 2),
+(248, 'Touima', 2),
+(249, 'Touissit', 2),
+(250, 'Zaïo', 2),
+(251, 'Zeghanghane', 2),
+(252, 'Rabat', 4),
+(253, 'Salé', 4),
+(254, 'Ain El Aouda', 4),
+(255, 'Harhoura', 4),
+(256, 'Khémisset', 4),
+(257, 'Oulmès', 4),
+(258, 'Rommani', 4),
+(259, 'Sidi Allal El Bahraoui', 4),
+(260, 'Sidi Bouknadel', 4),
+(261, 'Skhirate', 4),
+(262, 'Tamesna', 4),
+(263, 'Témara', 4),
+(264, 'Tiddas', 4),
+(265, 'Tiflet', 4),
+(266, 'Touarga', 4),
+(267, 'Agadir', 9),
+(268, 'Agdz', 8),
+(269, 'Agni Izimmer', 9),
+(270, 'Aït Melloul', 9),
+(271, 'Alnif', 8),
+(272, 'Anzi', 9),
+(273, 'Aoulouz', 9),
+(274, 'Aourir', 9),
+(275, 'Arazane', 9),
+(276, 'Aït Baha', 9),
+(277, 'Aït Iaâza', 9),
+(278, 'Aït Yalla', 8),
+(279, 'Ben Sergao', 9),
+(280, 'Biougra', 9),
+(281, 'Boumalne-Dadès', 8),
+(282, 'Dcheira El Jihadia', 9),
+(283, 'Drargua', 9),
+(284, 'El Guerdane', 9),
+(285, 'Harte Lyamine', 8),
+(286, 'Ida Ougnidif', 9),
+(287, 'Ifri', 8),
+(288, 'Igdamen', 9),
+(289, 'Ighil n''Oumgoun', 8),
+(290, 'Imassine', 8),
+(291, 'Inezgane', 9),
+(292, 'Irherm', 9),
+(293, 'Kelaat-M''Gouna', 8),
+(294, 'Lakhsas', 9),
+(295, 'Lakhsass', 9),
+(296, 'Lqliâa', 9),
+(297, 'M''semrir', 8),
+(298, 'Massa (Maroc)', 9),
+(299, 'Megousse', 9),
+(300, 'Ouarzazate', 8),
+(301, 'Oulad Berhil', 9),
+(302, 'Oulad Teïma', 9),
+(303, 'Sarghine', 8),
+(304, 'Sidi Ifni', 10),
+(305, 'Skoura', 8),
+(306, 'Tabounte', 8),
+(307, 'Tafraout', 9),
+(308, 'Taghzout', 1),
+(309, 'Tagzen', 9),
+(310, 'Taliouine', 9),
+(311, 'Tamegroute', 8),
+(312, 'Tamraght', 9),
+(313, 'Tanoumrite Nkob Zagora', 8),
+(314, 'Taourirt ait zaghar', 8),
+(315, 'Taroudannt', 9),
+(316, 'Temsia', 9),
+(317, 'Tifnit', 9),
+(318, 'Tisgdal', 9),
+(319, 'Tiznit', 9),
+(320, 'Toundoute', 8),
+(321, 'Zagora', 8),
+(322, 'Afourar', 5),
+(323, 'Aghbala', 5),
+(324, 'Azilal', 5),
+(325, 'Aït Majden', 5),
+(326, 'Beni Ayat', 5),
+(327, 'Béni Mellal', 5),
+(328, 'Bin elouidane', 5),
+(329, 'Bradia', 5),
+(330, 'Bzou', 5),
+(331, 'Dar Oulad Zidouh', 5),
+(332, 'Demnate', 5),
+(333, 'Dra''a', 8),
+(334, 'El Ksiba', 5),
+(335, 'Foum Jamaa', 5),
+(336, 'Fquih Ben Salah', 5),
+(337, 'Kasba Tadla', 5),
+(338, 'Ouaouizeght', 5),
+(339, 'Oulad Ayad', 5),
+(340, 'Oulad M''Barek', 5),
+(341, 'Oulad Yaich', 5),
+(342, 'Sidi Jaber', 5),
+(343, 'Souk Sebt Oulad Nemma', 5),
+(344, 'Zaouïat Cheikh', 5),
+(345, 'Tanger‎', 1),
+(346, 'Tétouan‎', 1),
+(347, 'Akchour', 1),
+(348, 'Assilah', 1),
+(349, 'Bab Berred', 1),
+(350, 'Bab Taza', 1),
+(351, 'Brikcha', 1),
+(352, 'Chefchaouen', 1),
+(353, 'Dar Bni Karrich', 1),
+(354, 'Dar Chaoui', 1),
+(355, 'Fnideq', 1),
+(356, 'Gueznaia', 1),
+(357, 'Jebha', 1),
+(358, 'Karia', 3),
+(359, 'Khémis Sahel', 1),
+(360, 'Ksar El Kébir', 1),
+(361, 'Larache', 1),
+(362, 'M''diq', 1),
+(363, 'Martil', 1),
+(364, 'Moqrisset', 1),
+(365, 'Oued Laou', 1),
+(366, 'Oued Rmel', 1),
+(367, 'Ouazzane', 1),
+(368, 'Point Cires', 1),
+(369, 'Sidi Lyamani', 1),
+(370, 'Sidi Mohamed ben Abdallah el-Raisuni', 1),
+(371, 'Zinat', 1),
+(372, 'Ajdir‎', 1),
+(373, 'Aknoul‎', 3),
+(374, 'Al Hoceïma‎', 1),
+(375, 'Aït Hichem‎', 1),
+(376, 'Bni Bouayach‎', 1),
+(377, 'Bni Hadifa‎', 1),
+(378, 'Ghafsai‎', 3),
+(379, 'Guercif‎', 2),
+(380, 'Imzouren‎', 1),
+(381, 'Inahnahen‎', 1),
+(382, 'Issaguen (Ketama)‎', 1),
+(383, 'Karia (El Jadida)‎', 6),
+(384, 'Karia Ba Mohamed‎', 3),
+(385, 'Oued Amlil‎', 3),
+(386, 'Oulad Zbair‎', 3),
+(387, 'Tahla‎', 3),
+(388, 'Tala Tazegwaght‎', 1),
+(389, 'Tamassint‎', 1),
+(390, 'Taounate‎', 3),
+(391, 'Targuist‎', 1),
+(392, 'Taza‎', 3),
+(393, 'Taïnaste‎', 3),
+(394, 'Thar Es-Souk‎', 3),
+(395, 'Tissa‎', 3),
+(396, 'Tizi Ouasli‎', 3),
+(397, 'Laayoune‎', 11),
+(398, 'El Marsa‎', 11),
+(399, 'Tarfaya‎', 11),
+(400, 'Boujdour‎', 11),
+(401, 'Awsard', 12),
+(402, 'Oued-Eddahab', 12),
+(403, 'Stehat', 1),
+(404, 'Aït Attab', 5);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,0 +1,14 @@
+{
+  "name": "peaplepertask",
+  "version": "1.0.0",
+  "description": "Welcome to PeoplePerTask, the dynamic online platform designed to empower freelancers and independent professionals to connect with clients seeking their expertise. With a similar mission to popular platforms like PeoplePerHour and Upwork, PeoplePerTask offers a vibrant and user-friendly space for individuals to showcase their skills and build rewarding freelance careers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.2"
+  }
+}
