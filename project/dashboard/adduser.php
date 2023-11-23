@@ -22,13 +22,13 @@ $active_categorie = '';
                       <div class="col">
                         <div class="">
                           <label class="form-label" >First name</label>
-                          <input type="text" name="firstname" class="form-control first_name" >
+                          <input type="text" name="firstname" class="form-control" >
                         </div>
                       </div>
                       <div class="col">
                         <div class="">
                             <label class="form-label" >Last name</label>
-                          <input type="text" name="lastname" class="form-control last_name" >
+                          <input type="text" name="lastname" class="form-control" >
                         </div>
                       </div>
                     </div>
@@ -36,25 +36,33 @@ $active_categorie = '';
                     <!-- Text input -->
                     <div class="mb-4">
                         <label class="form-label" >Email</label>
-                      <input type="text" name="email" class="form-control email" >
+                      <input type="text" name="email" class="form-control" >
                     </div>
                   
                     <!-- Text input -->
                     <div class="mb-4">
-                        <label class="form-label">Title</label>
-                      <input type="text" name="" class="form-control title_user" >
+                        <label class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" >
                     </div>
                   
                     <!-- Number input -->
                     <div class=" mb-4">
-                      <label class="form-label">Status</label>
-                      <input type="text" class="form-control status" >
+                      <label class="form-label">birthday</label>
+                      <input type="date" class="form-control" >
                     </div>
-                  
+                    
+                    <!-- Number input -->
+                    <div class=" mb-4">
+                      <label class="form-label">birthday</label>
+                      <select name="region" class="form-control">
+                        <option value="" disabled="disabled">Choize votre ville</option>
+                        <?php include('include/ville.php')?>
+                      </select>                      
+                    </div>
                     <!-- Message input -->
                     <div class=" mb-4">
                       <label class="form-label">Position</label>
-                      <textarea class="form-control position"  rows="4"></textarea>
+                      <input class="form-control "></textarea>
                     </div>
                   
                     <!-- Submit button -->
