@@ -31,31 +31,20 @@ $active_categorie = '';
                 <tbody>
 
                 <?php
-                //    $servername = "localhost";
-                //    $username = "root";
-                //    $password = "";
-                //    $database = "peoplepertask";
-                   
-                //    // Create connection
-                //    $con = mysqli_connect($servername, $username, $password,$database);
-                   
-                //    // Check connection
-                //    if (mysqli_connect_error()) {
-                //      die("Connection failed: " . mysqli_connect_error());
-                //    }
+               
 
 
                    $sql = "SELECT * FROM users 
                    LEFT JOIN ville on users.City = ville.id
                    LEFT JOIN region on ville.region = region.id
                    ";
-                   $result = mysqli_query($con,$sql);
+                   $user = mysqli_query($con,$sql);
 
-                   if (!$result) {
+                   if (!$user) {
                     die("invaled query: " . mysqli_error());
                   }
 
-                  while ($row = mysqli_fetch_assoc($result)){
+                  while ($row = mysqli_fetch_assoc($user)){
                     echo "
                     <tr>
                         <td>$row[ID_user]</td>
@@ -65,8 +54,8 @@ $active_categorie = '';
                         <td>$row[birthday]</td>
                         <td>$row[ville] $row[region] $row[PostalCode]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='/project/dashboard/edit.php?id=$row[ID_user]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='/project/dashboard/delete.php?id=$row[ID_user]'>Delete</a>
+                            <a class='btn btn-primary btn-sm' href='edit.php?id=$row[ID_user]'>Edit</a>
+                            <a class='btn btn-danger btn-sm' href='delete.php?id=$row[ID_user]'>Delete</a>
                         </td>
                     </tr>
                     ";
