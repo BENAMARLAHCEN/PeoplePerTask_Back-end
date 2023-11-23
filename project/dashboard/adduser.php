@@ -8,66 +8,109 @@ $active_project = '';
 $active_contact = '';
 $active_categorie = '';
 ?>
+<?php 
+$name = '';
+$email = '';
+$password_ = '';
+$birthday = '';
+$ville = '';
+$postalcode ='';
+
+$errorMessage = "";
+
+if ($_SERVER['REQUEST_METHOD']=='POST' ) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password_ = $_POST['password'];
+    $birthday = $_POST['birthday'];
+    $ville = $_POST['city'];
+    $postalcode =$_POST['postalcode'];
+
+
+do {
+    if (empty($name) || empty($email) || empty($password_) || empty($birthday)|| empty($ville) || empty($postalcode)) {
+        $errorMessage = "error";
+        break;
+    }
+    // add user
+    include('include/connect.php');
+    $sql = "INSERT INTO users(user_name,userPassword,email,birthday,City,PostalCode)
+            VALUES ('$name','$password_','$email','$birthday',$ville,'$postalcode');
+            ";
+    $user = mysqli_query($con,$sql);
+
+    if (!$user) {
+        $errorMessage = "query error" . mysqli_error();
+        break;
+    }
+    
+    // header("location : /test/project/dashboard/agents.php");
+    header('location:agents.php');
+    exit;
+
+} while (false);
+}
+?>
 <?php include('include/head.php') ?>
 <body>
     <div class="wrapper">
         <?php include('include/aside.php') ?>
         <div class="main">
             <?php include('include/navbar.php') ?>
+            <?php 
+            if (!empty($errorMessage)) {
+                echo "
+                <div class='btn btn-danger'>$errorMessage</div>
+                ";
+            }
+            ?>
             
             <div class="modal-content bg-white" >
-                <form id="forms">
+                <form id="forms" method="post">
                     <!-- 2 column grid layout with text inputs for the first and last names -->
-                    <div class="row mb-4">
-                      <div class="col">
-                        <div class="">
-                          <label class="form-label" >First name</label>
-                          <input type="text" name="firstname" class="form-control" >
+                    
+                      
+                        <div class="mb-4">
+                            <label class="form-label" >Name</label>
+                          <input type="text" name="name" class="form-control" value="<?php echo $name;?>" >
                         </div>
-                      </div>
-                      <div class="col">
-                        <div class="">
-                            <label class="form-label" >Last name</label>
-                          <input type="text" name="lastname" class="form-control" >
-                        </div>
-                      </div>
-                    </div>
+                  
+                    
                   
                     <!-- Text input -->
                     <div class="mb-4">
                         <label class="form-label" >Email</label>
-                      <input type="text" name="email" class="form-control" >
+                      <input type="text" name="email" class="form-control" value="<?php echo $email;?>">
                     </div>
                   
                     <!-- Text input -->
                     <div class="mb-4">
                         <label class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" >
+                      <input type="password" name="password" class="form-control" value="<?php echo $password_;?>">
                     </div>
                   
                     <!-- Number input -->
                     <div class=" mb-4">
                       <label class="form-label">birthday</label>
-                      <input type="date" class="form-control" >
+                      <input type="date" name="birthday" class="form-control" value="<?php echo $birthday;?>">
                     </div>
                     
                     <!-- Number input -->
                     <div class=" mb-4">
-                      <label class="form-label">birthday</label>
-                      <select name="region" class="form-control">
-                        <option value="" disabled="disabled">Choize votre ville</option>
+                      <label class="form-label">Ville</label>
+                      <select name="city" class="form-control" value="<?php echo $name;?>">
+                        <option value="" selected disabled>Choize votre ville</option>
                         <?php include('include/ville.php')?>
                       </select>                      
                     </div>
                     <!-- Message input -->
                     <div class=" mb-4">
-                      <label class="form-label">Position</label>
-                      <input class="form-control "></textarea>
+                      <label class="form-label">PostalCode</label>
+                      <input type="text" name="postalcode" class="form-control " value="<?php echo $postalcode;?>">
                     </div>
                   
                     <!-- Submit button -->
                     <div class="d-flex w-100 justify-content-center">
-                    <p class="error text-danger"></p>
                     <button type="submit" class="btn btn-success btn-block mb-4 me-4 save">Save Edit</button>
                     <button class="btn btn-danger btn-block mb-4 annuler">Annuler</button>
                     </div>
