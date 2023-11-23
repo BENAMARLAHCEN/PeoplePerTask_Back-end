@@ -3,7 +3,8 @@
 
 <?php 
 $active_overview = '';
-$active_agents = 'active';
+$active_users = 'active';
+$active_freelances = '';
 $active_project = '';
 $active_contact = '';
 $active_categorie = '';
@@ -16,7 +17,8 @@ $active_categorie = '';
         <div class="main">
         <?php include('include/navbar.php') ?>
         <a class='btn btn-primary' style="width : 10rem;" href='adduser.php'>ADD USER</a>
-            <table id="example" class="Agents table table-striped" style="width:100%">
+            <div class="Agents">
+            <table id="example" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -75,6 +77,7 @@ $active_categorie = '';
                     </tr>
                 </tfoot>
             </table>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

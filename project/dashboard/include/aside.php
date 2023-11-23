@@ -8,16 +8,19 @@
 
                 <ul class="sidebar_nav">
                     <li class="sidebar_item <?=$active_overview ?>" style="width: 100%;">
-                        <a href="dashboard.html" class="sidebar_link"> <img src="img/1. overview.svg" alt="">Overview</a>
+                        <a href="dashboard.php" class="sidebar_link"> <img src="img/1. overview.svg" alt="">Overview</a>
                     </li>
-                    <li class="sidebar_item <?=$active_agents ?>">
-                        <a href="agents.html" class="sidebar_link"> <img src="img/agents.svg" alt="">Agents</a>
+                    <li class="sidebar_item <?=$active_users ?>">
+                        <a href="users.php" class="sidebar_link"> <img src="img/agents.svg" alt="">Users</a>
+                    </li>
+                    <li class="sidebar_item <?=$active_freelances ?>">
+                        <a href="freelances.php" class="sidebar_link"> <img src="img/agents.svg" alt="">Freelances</a>
                     </li>
                     <li class="sidebar_item<?=$active_project ?>">
-                        <a href="task.html" class="sidebar_link"> <img src="img/task.svg" alt="">Task</a>
+                        <a href="projects.php" class="sidebar_link"> <img src="img/task.svg" alt="">projects</a>
                     </li>
                     <li class="sidebar_item<?=$active_contact ?>">
-                        <a href="contact.html" class="sidebar_link"><img src="img/agent.svg" alt="">Contact</a>
+                        <a href="contact.php" class="sidebar_link"><img src="img/agent.svg" alt="">Contact</a>
                     </li>
                     <li class="sidebar_item <?=$active_categorie?>">
                         <a href="#" class="sidebar_link"><img src="img/articles.svg" alt="">Articles</a>
