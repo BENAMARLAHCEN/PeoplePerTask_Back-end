@@ -4,7 +4,8 @@
 $active_overview = '';
 $active_users = '';
 $active_freelances = '';
-$active_project = 'active';
+$active_testimonials = 'active';
+$active_project = '';
 $active_contact = '';
 $active_categorie = '';
 ?>
@@ -22,10 +23,9 @@ include('include/head.php');
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Title</th>
-                        <th>project_description</th>
-                        <th>categorie</th>
-                        <th>sub_category</th>
+                        <th>Name of user</th>
+                        <th>Commentaire</th>
+                        <th>Date of create</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -33,27 +33,24 @@ include('include/head.php');
 
                 <?php
                     include('include/connect.php');
-                   $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
-                   LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
-                   LEFT JOIN categories on categories.id = sub_categories.id_category
+                   $sql = "SELECT * FROM testimonials 
+                   LEFT JOIN users on users.ID_user = testimonials.ID_user
                    ";
-                   $user = mysqli_query($con,$sql);
+                   $tes = mysqli_query($con,$sql);
 
-                   if (!$user) {
+                   if (!$tes) {
                     die("invaled query: " . mysqli_error());
                   }
 
-                  while ($row = mysqli_fetch_assoc($user)){
+                  while ($row = mysqli_fetch_assoc($tes)){
                     echo "
                     <tr>
-                        <td>$row[id_pro]</td>
-                        <td>$row[title]</td>
-                        <td>$row[project_description]</td>
-                        <td>$row[CategoryName]</td>
-                        <td>$row[subName]</td>
+                        <td>$row[id]</td>
+                        <td>$row[user_name]</td>
+                        <td>$row[Commentaire]</td>
+                        <td>$row[date_c]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='edit/editproject.php?id=$row[id_pro]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='deleteproject.php?id=$row[id_pro]'>Delete</a>
+                            <a class='btn btn-danger btn-sm' href='delete/deletetestimonial.php?id=$row[id]'>Delete</a>
                         </td>
                     </tr>
                     ";
@@ -64,10 +61,9 @@ include('include/head.php');
                 <tfoot>
                     <tr>
                         <th>ID</th>
-                        <th>FreelanceName</th>
-                        <th>Email</th>
-                        <th>Password</th>
-                        <th>Skills</th>
+                        <th>Name of user</th>
+                        <th>Commentaire</th>
+                        <th>Date of create</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
