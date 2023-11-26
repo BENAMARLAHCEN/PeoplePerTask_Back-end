@@ -1,17 +1,31 @@
+<?php include('include/connect.php') ?>
+<?php
+$sql = "SELECT COUNT(*) AS user FROM users";
+$user = mysqli_query($con,$sql);
+$sql = "SELECT COUNT(*) AS project FROM projects";
+$project = mysqli_query($con,$sql);
+$sql = "SELECT COUNT(*) AS freelance FROM freelance";
+$freelance = mysqli_query($con,$sql);
+$sql = "SELECT COUNT(*) AS testimonial FROM testimonials";
+$testimonial = mysqli_query($con,$sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <?php 
 $active_overview = 'active';
 $active_users = '';
 $active_freelances = '';
+$active_testimonials = '';
 $active_project = '';
 $active_contact = '';
 $active_categorie = '';
+$place = '';
 ?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -34,8 +48,8 @@ $active_categorie = '';
                                     <div>
                                         <p class="mb-0">Projects</p>
                                         <div class="mt-4">
-                                            <h3><strong>18</strong></h3>
-                                            <p><strong>2</strong> Completed</p>
+                                            <h3><strong><?=mysqli_fetch_assoc($project)['project']?></strong></h3>
+                                            
                                         </div>
                                     </div>
                                     <div class="cursor">
@@ -51,10 +65,10 @@ $active_categorie = '';
                             <div class="card-body p-4">
                                 <div class="d-flex justify-content-between px-md-1">
                                     <div>
-                                        <p class="mb-0">Active Task</p>
+                                        <p class="mb-0">Cliens</p>
                                         <div class="mt-4">
-                                            <h3><strong>132</strong></h3>
-                                            <p><strong>32</strong> Completed</p>
+                                            <h3><strong><?=mysqli_fetch_assoc($user)['user']?></strong></h3>
+                                            
                                         </div>
                                     </div>
                                     <div class="">
@@ -70,10 +84,10 @@ $active_categorie = '';
                             <div class="card-body p-4">
                                 <div class="d-flex justify-content-between px-md-1">
                                     <div>
-                                        <p class="mb-0">Teams</p>
+                                        <p class="mb-0">Freelance</p>
                                         <div class="mt-4">
-                                            <h3><strong>12</strong></h3>
-                                            <p><strong></strong> Completed</p>
+                                            <h3><strong><?=mysqli_fetch_assoc($freelance)['freelance']?></strong></h3>
+                                            
                                         </div>
                                     </div>
                                     <div class="">
@@ -89,10 +103,10 @@ $active_categorie = '';
                             <div class="card-body p-4">
                                 <div class="d-flex justify-content-between px-md-1">
                                     <div>
-                                        <p class="mb-0">Projects</p>
+                                        <p class="mb-0">testimonials</p>
                                         <div class="mt-4">
-                                            <h3><strong>76%</strong></h3>
-                                            <p><strong>57%</strong> Completed</p>
+                                            <h3><strong><?=mysqli_fetch_assoc($testimonial)['testimonial']?></strong></h3>
+                                            
                                         </div>
                                     </div>
                                     <div class="">
