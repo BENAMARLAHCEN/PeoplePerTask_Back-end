@@ -1,18 +1,18 @@
 <?php include('include/connect.php') ?>
 <?php
 $sql = "SELECT COUNT(*) AS user FROM users";
-$user = mysqli_query($con,$sql);
+$user = mysqli_query($con, $sql);
 $sql = "SELECT COUNT(*) AS project FROM projects";
-$project = mysqli_query($con,$sql);
+$project = mysqli_query($con, $sql);
 $sql = "SELECT COUNT(*) AS freelance FROM freelance";
-$freelance = mysqli_query($con,$sql);
+$freelance = mysqli_query($con, $sql);
 $sql = "SELECT COUNT(*) AS testimonial FROM testimonials";
-$testimonial = mysqli_query($con,$sql);
+$testimonial = mysqli_query($con, $sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $active_overview = 'active';
 $active_users = '';
 $active_freelances = '';
@@ -22,23 +22,52 @@ $active_contact = '';
 $active_categorie = '';
 $place = '';
 ?>
+<?php
+if (isset($_POST['addtask'])) {
+    $task_desc = $_POST['task_desc'];
+    $task_status = $_POST['task_status'];
+
+
+
+    do {
+        if (empty($task_desc) || empty($task_status)) {
+            echo "error";
+            break;
+        }
+        // add user
+
+
+
+        $sql = "INSERT INTO task(description,status) VALUES ('$task_desc','$task_status');";
+        $addtask = mysqli_query($con, $sql);
+
+        if (!$addtask) {
+            echo "query error" . mysqli_error($con);
+            break;
+        }
+
+        header('location:dashboard.php');
+        exit;
+    } while (false);
+}
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
     <div class="wrapper">
         <?php include('include/aside.php') ?>
         <div class="main">
-        <?php include('include/navbar.php') ?>
+            <?php include('include/navbar.php') ?>
             <section class="overview">
                 <div class="row p-4">
                     <div class="col-xl-3 col-sm-6 col-12 mb-4">
@@ -48,8 +77,8 @@ $place = '';
                                     <div>
                                         <p class="mb-0">Projects</p>
                                         <div class="mt-4">
-                                            <h3><strong><?=mysqli_fetch_assoc($project)['project']?></strong></h3>
-                                            
+                                            <h3><strong><?= mysqli_fetch_assoc($project)['project'] ?></strong></h3>
+
                                         </div>
                                     </div>
                                     <div class="cursor">
@@ -67,8 +96,8 @@ $place = '';
                                     <div>
                                         <p class="mb-0">Cliens</p>
                                         <div class="mt-4">
-                                            <h3><strong><?=mysqli_fetch_assoc($user)['user']?></strong></h3>
-                                            
+                                            <h3><strong><?= mysqli_fetch_assoc($user)['user'] ?></strong></h3>
+
                                         </div>
                                     </div>
                                     <div class="">
@@ -86,8 +115,8 @@ $place = '';
                                     <div>
                                         <p class="mb-0">Freelance</p>
                                         <div class="mt-4">
-                                            <h3><strong><?=mysqli_fetch_assoc($freelance)['freelance']?></strong></h3>
-                                            
+                                            <h3><strong><?= mysqli_fetch_assoc($freelance)['freelance'] ?></strong></h3>
+
                                         </div>
                                     </div>
                                     <div class="">
@@ -105,8 +134,8 @@ $place = '';
                                     <div>
                                         <p class="mb-0">testimonials</p>
                                         <div class="mt-4">
-                                            <h3><strong><?=mysqli_fetch_assoc($testimonial)['testimonial']?></strong></h3>
-                                            
+                                            <h3><strong><?= mysqli_fetch_assoc($testimonial)['testimonial'] ?></strong></h3>
+
                                         </div>
                                     </div>
                                     <div class="">
@@ -173,23 +202,19 @@ $place = '';
 
                         </div>
                         <div class="list-group">
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
+                            <div class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
                                 <p>Cras justo odio</p>
                                 <p>4444</p>
                             </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
+                            <div class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
                                 <p>Dapibus ac facilisis in</p>
                                 <p>4444</p>
                             </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
+                            <div class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
                                 <p>Vestibulum at eros</p>
                                 <p>4444</p>
                             </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
+                            <div class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
                                 <p>Vestibulum at eros</p>
                                 <p>4444</p>
                             </div>
@@ -207,26 +232,22 @@ $place = '';
 
                         </div>
                         <div class="Admin_task list-group">
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
+                            <div class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
                                 <p>Create new task</p>
-                                <img class="cursor " id="add_admin_task" src="img/inactive.svg" alt="icon">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="img/inactive.svg" alt="icon"></button>
                             </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
-                                <p>Finish task update</p>
-                                <img src="img/warning.svg" alt="icon">
-                            </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
-                                <p>Create new task example</p>
-                                <img src="img/successnew.svg" alt="icon">
-                            </div>
-                            <div
-                                class="list-group-item px-3 text d-flex justify-content-between align-items-center p-4">
-                                <p>Update cliens report</p>
-                                <img src="img/default.svg" alt="icon">
-                            </div>
+                            <?php
+                            $sql = "select * from task limit 3";
+                            $task = mysqli_query($con, $sql);
+                            while ($row = mysqli_fetch_assoc($task)) {
+                                echo "<div class='list-group-item px-3 text d-flex justify-content-between align-items-center p-4'>
+                                        <p>$row[description]</p>
+                                        <img src='$row[status]' alt='icon'>
+                                      </div>
+                            ";
+                            }
+                            ?>
+
                         </div>
                     </div>
                 </div>
@@ -234,40 +255,44 @@ $place = '';
         </div>
     </div>
     <!-- edit modal -->
-    <div class="modal">
-        <div class="modal-content" >
-            <form id="forms">
-                <!-- 2 column grid layout with text inputs for the first and last names -->
-                <div class="mb-4">
-                      <label class="form-label" >Task description</label>
-                      <input type="text" class="form-control task-desc" >
-                    
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add new task</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              
-                <!-- select input -->
-                <div class="mb-4">
-                    <label class="form-label">Status</label>
-                        <select class="form-control" name="task status" id="status">
+
+                <form method="post">
+                    <!-- 2 column grid layout with text inputs for the first and last names -->
+                    <div class="mb-4">
+                        <label class="form-label">Task description</label>
+                        <input type="text" name="task_desc" class="form-control">
+
+                    </div>
+
+                    <!-- select input -->
+                    <div class="mb-4">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" name="task_status" id="status">
                             <option value="img/default.svg">Default</option>
                             <option value="img/successnew.svg">New</option>
                             <option value="img/warning.svg">Urgent</option>
                         </select>
-                </div>
-              
+                    </div>
 
-                <div class="d-flex w-100 justify-content-center">
-                <button type="submit" class="btn btn-success btn-block mb-4 me-4 save">Save Edit</button>
-                <div class="btn btn-danger btn-block mb-4 annuler">Annuler</div>
-                </div>
-              </form>
-                
+
+                    <div class="d-flex w-100 justify-content-center">
+                        <button type="submit" name="addtask" class="btn btn-success btn-block mb-4 me-4">Save</button>
+                        <div class="btn btn-secondary btn-block mb-4 me-4" data-bs-dismiss="modal">Close</button>
+                        </div>
+                </form>
+            </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="dashboard.js"></script>
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
 </body>
 
 </html>
