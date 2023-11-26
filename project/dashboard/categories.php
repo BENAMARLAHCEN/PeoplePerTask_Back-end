@@ -8,6 +8,8 @@ $active_testimonials = '';
 $active_project = '';
 $active_contact = '';
 $active_categorie = 'active';
+$place = '';
+
 ?>
 <!-- <head>
     <meta charset="UTF-8">
@@ -29,8 +31,8 @@ include('include/head.php');
         <div class="main">
         <?php include('include/navbar.php') ?>
         <div class="d-flex">
-        <a class='btn btn-primary' style="width : 10rem;" href='adduser.php'>ADD CATEDORY</a>
-        <a class='btn btn-primary' style="width : 14rem;" href='adduser.php'>ADD SUB-CATEDORY</a>
+        <a class='btn btn-primary' style="width : 10rem;" href='create/addcategory.php'>ADD CATEDORY</a>
+        <a class='btn btn-primary' style="width : 14rem;" href='create/addsub_category.php'>ADD SUB-CATEDORY</a>
         </div>
             <div class="Agents">
             <table id="example" class="table table-striped" style="width:100%">
@@ -47,15 +49,15 @@ include('include/head.php');
 
                 <?php
                     include('include/connect.php');
-                   $sql = "SELECT categories.id as id_cat,CategoryName,COUNT(projects.id) as projectN,COUNT(sub_categories.id) as categoryN FROM categories
-                   LEFT JOIN sub_categories on categories.id = sub_categories.id_category
-                   LEFT JOIN projects on categories.id = projects.id_categorie
+                   $sql = "SELECT categories.id as id_cat,CategoryName,COUNT(DISTINCT projects.id) as projectN,COUNT(DISTINCT sub_categories.id) as categoryN FROM categories
+                   left JOIN projects on categories.id = projects.id_categorie
+                   left JOIN sub_categories on categories.id = sub_categories.id_category
                    GROUP BY categories.id
                    ";
                    $user = mysqli_query($con,$sql);
 
                    if (!$user) {
-                    die("invaled query: " . mysqli_error());
+                    die("invaled query: " . mysqli_error($con));
                   }
 
                   while ($row = mysqli_fetch_assoc($user)){
@@ -66,8 +68,9 @@ include('include/head.php');
                         <td>$row[projectN]</td>
                         <td>$row[categoryN]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='editcat.php?id=$row[id_cat]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='deletecat.php?id=$row[id_cat]'>Delete</a>
+                            <a class='btn btn-primary btn-sm' href='edit/editcategory.php?id=$row[id_cat]'>Edit</a>
+                            <a class='btn btn-danger btn-sm' href='delete/deletecategory.php?id=$row[id_cat]'>Delete</a>
+                            <a class='btn btn-danger btn-sm' href='delete/delete_sub_cat.php?id=$row[id_cat]&category=$row[CategoryName]'>Delete sub category</a>
                         </td>
                     </tr>
                     ";
