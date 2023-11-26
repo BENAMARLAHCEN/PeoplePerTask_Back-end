@@ -8,6 +8,7 @@ $active_testimonials = 'active';
 $active_project = '';
 $active_contact = '';
 $active_categorie = '';
+$place = '';
 ?>
 <?php
 include('include/head.php');
@@ -39,7 +40,7 @@ include('include/head.php');
                    $tes = mysqli_query($con,$sql);
 
                    if (!$tes) {
-                    die("invaled query: " . mysqli_error());
+                    die("invaled query: " . mysqli_error($con));
                   }
 
                   while ($row = mysqli_fetch_assoc($tes)){
