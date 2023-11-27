@@ -3,10 +3,13 @@
 
 <?php 
 $active_overview = '';
-$active_agents = 'active';
+$active_users = 'active';
+$active_freelances = '';
+$active_testimonials = '';
 $active_project = '';
 $active_contact = '';
 $active_categorie = '';
+$place = '';
 ?>
 <?php 
 $name = '';
@@ -40,12 +43,12 @@ do {
     $user = mysqli_query($con,$sql);
 
     if (!$user) {
-        $errorMessage = "query error" . mysqli_error();
+        $errorMessage = "query error" . mysqli_error($con);
         break;
     }
     
     // header("location : /test/project/dashboard/agents.php");
-    header('location:agents.php');
+    header('location:users.php');
     exit;
 
 } while (false);
@@ -112,9 +115,9 @@ do {
                     <!-- Submit button -->
                     <div class="d-flex w-100 justify-content-center">
                     <button type="submit" class="btn btn-success btn-block mb-4 me-4 save">Save Edit</button>
-                    <button class="btn btn-danger btn-block mb-4 annuler">Annuler</button>
+                    <a class="btn btn-danger btn-block mb-4 " href="agents.php">Annuler</a>
                     </div>
-                  </form>
+                </form>
             </div>
         </div>
     
