@@ -172,6 +172,7 @@ a.sidebar_link:hover {
 /* agent */
 .Agents{
     overflow-x: scroll;
+    padding: 1rem 2rem;
 }
 .bg-cont{
     background-color: #F2F5F5;
