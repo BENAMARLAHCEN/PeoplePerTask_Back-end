@@ -19,10 +19,10 @@
                     <li class="sidebar_item <?=$active_testimonials?>">
                         <a href="<?=$place?>testimonials.php" class="sidebar_link"><img src="<?=$place?>img/articles.svg" alt="">testimonials</a>
                     </li>
-                    <li class="sidebar_item<?=$active_project ?>">
+                    <li class="sidebar_item <?=$active_project?>">
                         <a href="<?=$place?>projects.php" class="sidebar_link"> <img src="<?=$place?>img/task.svg" alt="">projects</a>
                     </li>
-                    <li class="sidebar_item<?=$active_contact ?>">
+                    <li class="sidebar_item <?=$active_contact ?>">
                         <a href="<?=$place?>contact.php" class="sidebar_link"><img src="<?=$place?>img/agent.svg" alt="">Contact</a>
                     </li>
                     <li class="sidebar_item <?=$active_categorie?>">

@@ -5,16 +5,16 @@
                 <div class="navbar  gap-4">
                     <div class="">
                         <input type="search" class="search " placeholder="Search">
-                        <img class="search_icon" src="img/search.svg" alt="iconicon">
+                        <img class="search_icon" src="<?=$place?>img/search.svg" alt="iconicon">
                     </div>
-                    <!-- <img src="img/search.svg" alt="icon"> -->
-                    <img class="notification" src="img/new.svg" alt="icon">
+                    <!-- <img src="<?=$place?>img/search.svg" alt="icon"> -->
+                    <img class="notification" src="<?=$place?>img/new.svg" alt="icon">
                     <div class="card new w-auto">
                         <div class="list-group list-group-light">
                             <div class="list-group-item px-3 d-flex justify-content-between align-items-center ">
-                                <p class="mt-auto">Notification</p><a href="#"><img src="img/settingsno.svg" alt="icon"></a>
+                                <p class="mt-auto">Notification</p><a href="#"><img src="<?=$place?>img/settingsno.svg" alt="icon"></a>
                             </div>
-                            <div class="list-group-item px-3 d-flex"><img src="img/notif.svg" alt="iconimage">
+                            <div class="list-group-item px-3 d-flex"><img src="<?=$place?>img/notif.svg" alt="iconimage">
                                 <div class="card-body">
                                     <h5 class="card-title">Card title</h5>
                                     <p class="card-text mb-3">Some quick example text to build on the card title and make up
@@ -22,7 +22,7 @@
                                     <small class="card-text">1  day ago</small>
                                 </div>
                             </div>
-                            <div class="list-group-item px-3 d-flex"><img src="img/notif.svg" alt="iconimage">
+                            <div class="list-group-item px-3 d-flex"><img src="<?=$place?>img/notif.svg" alt="iconimage">
                                 <div class="card-body">
                                     <h5 class="card-title">Card title</h5>
                                     <p class="card-text mb-3">Some quick example text to build on the card title and make up
@@ -38,12 +38,12 @@
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-icon pe-md-0 position-relative" data-bs-toggle="dropdown">
-                                <img src="img/photo_admin.svg" alt="icon">
+                                <img src="<?=$place?>img/photo_admin.svg" alt="icon">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end position-absolute">
                                 <a class="dropdown-item" href="#">Profile</a>
                                 <a class="dropdown-item" href="#">Account Setting</a>
-                                <a class="dropdown-item" href="../project/pages/index.html">Log out</a>
+                                <a class="dropdown-item" href="../../pages/index.php">Log out</a>
                             </div>
                         </li>
                     </ul>
