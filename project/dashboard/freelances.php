@@ -58,7 +58,7 @@ $place = '';
                         <td>$row[userPassword]</td>
                         <td>$row[skills]</td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='edit.php?id=$row[ID_user]'>Edit</a>
+                            <a class='btn btn-primary btn-sm' href='edit/editfreelance.php?id=$row[id]'>Edit</a>
                             <a class='btn btn-danger btn-sm' href='delete/deletefreelace.php?id=$row[id]'>Delete</a>
                         </td>
                     </tr>
