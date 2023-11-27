@@ -1,6 +1,18 @@
+<?php
+// Start output buffering
+ob_start();
+
+// Include necessary files
+include 'include/connect.php';
+include 'include/head.php'; // Contains HTML head content, stylesheets, etc.
+// ... Include other necessary files ...
+
+
+?>
+<?php include 'include/connect.php' ?>
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 $active_overview = '';
 $active_users = '';
 $active_freelances = '';
@@ -13,41 +25,63 @@ $place = '';
 <?php
 include('include/head.php');
 ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="dashboard.js"></script>
+<script src="js/agents.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
 <body>
     <div class="wrapper">
         <?php include('include/aside.php') ?>
         <div class="main">
-        <?php include('include/navbar.php') ?>
-        <a class='btn btn-primary' style="width : 10rem;" href='create/creatproject.php'>ADD PROJECT</a>
-            <div class="Agents">
-            <table id="example" class="table table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>project_description</th>
-                        <th>categorie</th>
-                        <th>sub_category</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <?php include('include/navbar.php') ?>
+            <?php
+            if (isset($_GET['opertion']) && $_GET['opertion'] == 'true') {
+                echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+            }
+            if (isset($_GET['opertion']) && $_GET['opertion'] == 'false') {
+                echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+            }
+            ?>
 
-                <?php
-                    include('include/connect.php');
-                   $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
+            <button type="button" style="width : 10rem;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                ADD PROJECT
+            </button>
+            <div class="Agents">
+                <table id="example" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>project_description</th>
+                            <th>categorie</th>
+                            <th>sub_category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <?php
+
+                        $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
                    LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
                    LEFT JOIN categories on categories.id = sub_categories.id_category
                    ";
-                   $user = mysqli_query($con,$sql);
+                        $user = mysqli_query($con, $sql);
 
-                   if (!$user) {
-                    die("invaled query: " . mysqli_error($con));
-                  }
+                        if (!$user) {
+                            die("invaled query: " . mysqli_error($con));
+                        }
 
-                  while ($row = mysqli_fetch_assoc($user)){
-                    echo "
+                        while ($row = mysqli_fetch_assoc($user)) {
+                            echo "
                     <tr>
                         <td>$row[id_pro]</td>
                         <td>$row[title]</td>
@@ -60,32 +94,143 @@ include('include/head.php');
                         </td>
                     </tr>
                     ";
-                  }
-                ?>
-                    
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>FreelanceName</th>
-                        <th>Email</th>
-                        <th>Password</th>
-                        <th>Skills</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
-            </table>
+                        }
+                        ?>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>FreelanceName</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Skills</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-            
+
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-    <script src="dashboard.js"></script>
-    <script src="js/agents.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- edit modal -->
+    <style>
+        .modal-dialog {
+            max-width: 90% !important;
+        }
+    </style>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" stele="min-width: 2222rem;">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add new task</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <?php
+                if (isset($_POST['addproject'])) {
+                    $title = $_POST['title'];
+                    $project_desc = $_POST['project_desc'];
+                    $user_id = $_POST['user_id'];
+                    $cat_id = $_POST['cat_id'];
+                    $sub_id = $_POST['sub_id'];
+                    $project_img = $_FILES['project_img']['name'];
+                    $project_img_tmp_name = $_FILES['project_img']['tmp_name'];
+                    $project_img_folder = "uploaded/" . $project_img;
+
+                    do {
+                        if (empty($title) || empty($project_desc) || empty($cat_id) || empty($sub_id) || empty($user_id)) {
+                            header('location:projects.php?opertion=false');
+                            exit;
+                        }
+                        // add user
+
+                        $sql = "INSERT INTO projects(title,project_description,image,id_categorie,id_sub_category,ID_user) VALUES ('$title','$project_desc','$project_img',$cat_id,$sub_id,$user_id);";
+                        $addproject = mysqli_query($con, $sql);
+                        if ($addproject) {
+                            move_uploaded_file($project_img_tmp_name, $project_img_folder);
+                        }
+
+
+                        header('location:projects.php?opertion=true');
+                        exit;
+                    } while (false);
+                }
+                ?>
+                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
+
+                    <div class="mb-4">
+                        <label class="form-label">Title :</label>
+                        <input type="text" name="title" class="form-control">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Project description :</label>
+                        <input type="text" name="project_desc" class="form-control">
+                    </div>
+
+                    <!-- select input -->
+                    <div class=" mb-4">
+                        <label class="form-label">Category name</label>
+                        <select name="cat_id" class="form-control">
+                            <option value="" selected disabled>Choize votre category</option>
+                            <?php include('include/category.php') ?>
+                        </select>
+                    </div>
+
+                    <div class=" mb-4">
+                        <label class="form-label">Sub-Category name</label>
+                        <select name="sub_id" class="form-control">
+                            <option value="" selected disabled>Choize votre category</option>
+                            <?php
+                            $sql = "SELECT id,subName FROM sub_categories";
+                            $id_c = mysqli_query($con, $sql);
+
+                            if (!$id_c) {
+                                die("invaled query: " . mysqli_error($con));
+                            }
+
+                            while ($row = mysqli_fetch_assoc($id_c)) {
+                                echo "<option value='$row[id]'>$row[subName]</option>";
+                            } ?>
+                        </select>
+                    </div>
+
+                    <div class=" mb-4">
+                        <label class="form-label">User acount</label>
+                        <select name="user_id" class="form-control" value="">
+                            <option value="" selected disabled>Choize votre user</option>
+                            <?php $sql = "SELECT ID_user,user_name FROM users";
+                            $id_u = mysqli_query($con, $sql);
+
+                            if (!$id_u) {
+                                die("invaled query: " . mysqli_error($con));
+                            }
+
+                            while ($row = mysqli_fetch_assoc($id_u)) {
+                                echo "<option value='$row[ID_user]'>id:$row[ID_user] name:$row[user_name]</option>";
+                            } ?>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <input type="file" accept="image/png,image/jpg,image/jpeg" name="project_img" class="form-control">
+                    </div>
+
+
+                    <div class="d-flex w-100 justify-content-center">
+                        <button type="submit" name="addproject" class="btn btn-success btn-block mb-4 me-4">Add </button>
+                        <div class="btn btn-secondary btn-block mb-4 me-4" data-bs-dismiss="modal">Annuler</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
+
+<?php
+// Flush or clean the output buffer and send it to the browser
+ob_end_flush();
+?>
