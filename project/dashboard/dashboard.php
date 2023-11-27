@@ -1,13 +1,12 @@
 <?php include('include/connect.php') ?>
 <?php
-$sql = "SELECT COUNT(*) AS user FROM users";
-$user = mysqli_query($con, $sql);
-$sql = "SELECT COUNT(*) AS project FROM projects";
-$project = mysqli_query($con, $sql);
-$sql = "SELECT COUNT(*) AS freelance FROM freelance";
-$freelance = mysqli_query($con, $sql);
-$sql = "SELECT COUNT(*) AS testimonial FROM testimonials";
-$testimonial = mysqli_query($con, $sql);
+
+function get_stats($column, $table)  {
+    global $con;
+    $sql= "SELECT COUNT(*) AS $column FROM $table";
+    $result = mysqli_query($con, $sql);
+    echo mysqli_fetch_assoc($result)[$column];
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,17 +25,12 @@ $place = '';
 if (isset($_POST['addtask'])) {
     $task_desc = $_POST['task_desc'];
     $task_status = $_POST['task_status'];
-
-
-
     do {
         if (empty($task_desc) || empty($task_status)) {
             echo "error";
             break;
         }
-        // add user
-
-
+        // add task
 
         $sql = "INSERT INTO task(description,status) VALUES ('$task_desc','$task_status');";
         $addtask = mysqli_query($con, $sql);
@@ -77,7 +71,7 @@ if (isset($_POST['addtask'])) {
                                     <div>
                                         <p class="mb-0">Projects</p>
                                         <div class="mt-4">
-                                            <h3><strong><?= mysqli_fetch_assoc($project)['project'] ?></strong></h3>
+                                            <h3><strong><?php get_stats('project','projects'); ?></strong></h3>
 
                                         </div>
                                     </div>
@@ -96,7 +90,7 @@ if (isset($_POST['addtask'])) {
                                     <div>
                                         <p class="mb-0">Cliens</p>
                                         <div class="mt-4">
-                                            <h3><strong><?= mysqli_fetch_assoc($user)['user'] ?></strong></h3>
+                                            <h3><strong><?php get_stats('user','users'); ?></strong></h3>
 
                                         </div>
                                     </div>
@@ -115,7 +109,7 @@ if (isset($_POST['addtask'])) {
                                     <div>
                                         <p class="mb-0">Freelance</p>
                                         <div class="mt-4">
-                                            <h3><strong><?= mysqli_fetch_assoc($freelance)['freelance'] ?></strong></h3>
+                                            <h3><strong><?php get_stats('freelance','freelance'); ?></strong></h3>
 
                                         </div>
                                     </div>
@@ -134,7 +128,7 @@ if (isset($_POST['addtask'])) {
                                     <div>
                                         <p class="mb-0">testimonials</p>
                                         <div class="mt-4">
-                                            <h3><strong><?= mysqli_fetch_assoc($testimonial)['testimonial'] ?></strong></h3>
+                                            <h3><strong><?php get_stats('testimonial','testimonials'); ?></strong></h3>
 
                                         </div>
                                     </div>
@@ -237,7 +231,7 @@ if (isset($_POST['addtask'])) {
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="img/inactive.svg" alt="icon"></button>
                             </div>
                             <?php
-                            $sql = "select * from task limit 3";
+                            $sql = "select * from task order by id desc limit 3";
                             $task = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_assoc($task)) {
                                 echo "<div class='list-group-item px-3 text d-flex justify-content-between align-items-center p-4'>
@@ -292,7 +286,7 @@ if (isset($_POST['addtask'])) {
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="dashboard.js"></script>
-    <!-- <script src="script.js"></script> -->
+    <script src="script.js"></script>
 </body>
 
 </html>
