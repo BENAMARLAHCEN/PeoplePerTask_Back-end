@@ -43,7 +43,7 @@ if (isset($_POST['addtask'])) {
         header('location:dashboard.php');
         exit;
     } while (false);
-}
+} 
 ?>
 
 <head>
