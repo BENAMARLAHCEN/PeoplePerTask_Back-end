@@ -29,3 +29,4 @@ The database design is geared towards accommodating the platform's growth. Consi
 ## Contributing
 
 Contributions to improve the database schema or scripts are welcome. Fork this repository, make your changes, and submit a pull request.
+

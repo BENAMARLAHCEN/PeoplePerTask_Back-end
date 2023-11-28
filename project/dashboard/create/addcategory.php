@@ -1,3 +1,4 @@
+ <!-- Including the file for database connection -->
 <?php   include('../include/connect.php');   ?>
 
 <!DOCTYPE html>
@@ -28,7 +29,7 @@ if (isset($_POST['addfrelancer'])) {
       $errorMessage = "error";
       break;
     }
-    // add user
+    // 
    
 
     
