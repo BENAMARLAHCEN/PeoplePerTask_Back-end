@@ -27,6 +27,7 @@ include('include/head.php');
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="dashboard.js"></script>
 <script src="js/agents.js"></script>
+<script src="./js/ajax.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
@@ -80,20 +81,20 @@ include('include/head.php');
                         }
 
                         while ($row = mysqli_fetch_assoc($user)) {
-                            echo "
+                            ?>
                     <tr>
-                        <td>$row[id_pro]</td>
-                        <td>$row[title]</td>
-                        <td>$row[project_description]</td>
-                        <td>$row[CategoryName]</td>
-                        <td>$row[subName]</td>
+                        <td><?=$row['id_pro']?></td>
+                        <td><?=$row['title']?></td>
+                        <td><?=$row['project_description']?></td>
+                        <td><?=$row['CategoryName']?></td>
+                        <td><?=$row['subName']?></td>
                         <td>
-                            <button class='btn btn-primary btn-sm' onclick='updateFreelancer($row[id_pro])' >Edit</button>
-                            <a class='btn btn-primary btn-sm'  href='edit/editproject.php?id=$row[id_pro]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='delete/deleteproject.php?id=$row[id_pro]'>Delete</a>
+                            <button class='btn btn-primary btn-sm' onclick="updateFreelancer(<?=$row['id_pro']?>)" >Edit</button>
+                            <a class='btn btn-primary btn-sm'  href='edit/editproject.php?id=<?=$row['id_pro']?>'>Edit</a>
+                            <button class='btn btn-danger btn-sm' onclick="deleteRow('<?= $row['id_pro'] ?>','projects')">Delete</button>
                         </td>
                     </tr>
-                    ";
+                    <?php
                         }
                         ?>
 
