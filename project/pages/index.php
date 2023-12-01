@@ -1,5 +1,6 @@
 <?php
-include '../dashboard/include/connect.php'
+session_start();
+include '../dashboard/include/connect.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -77,102 +78,31 @@ include '../dashboard/include/connect.php'
         </div>
       </div>
       <div class="row ">
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center ">
-              <img src="./images/categorycoding.svg" alt="category">
+      <?php
+            include '../dashboard/include/connect.php';
+            $sql = "SELECT * FROM categories limit 8;";
+            $cat = mysqli_query($con, $sql);
+            if (!$cat) {
+              die("error query" . mysqli_error($con));
+            }
+            while ($row = mysqli_fetch_assoc($cat)) {
+              echo "
+              <div class='col-xl-3 col-lg-4 col-md-6 col-12 mb-3'>
+              <a href='recherch.php?$row[id]' style='text-decoration: none;'>
+              <div class='card category-card-style my-2 h-100'>
+                <div class='d-flex justify-content-center '>
+                  <img src='./images/$row[image]' alt='category'>
+                </div>
+                <div class='card-body text-center'>
+                  <h5 class='card-title fw-semibold'>$row[CategoryName]</h5>
+                  <p class='card-text'>$row[description]</p>
+                </div>
+              </div>
+              </a>
             </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center ">
-              <img src="./images/categoryillustration.svg" alt="">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center ">
-              <img src="./images/categoryMicrophone.svg" alt="">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center ">
-              <img src="./images/categoryPhotographer.svg" alt="">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center">
-              <img src="./images/categorycoding.svg" alt="">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center ">
-              <img src="./images/categorycoding.svg" alt="">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center">
-              <img src="./images/categorycoding.svg" alt="">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-          <div class="card category-card-style my-2">
-            <div class="d-flex justify-content-center ">
-              <img src="./images/categorycoding.svg" alt="">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="card-title fw-semibold">Light card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            </div>
-          </div>
-        </div>
+                ";
+            }
+            ?>
       </div>
   </section>
   <!-- famous freelancers -->
@@ -644,19 +574,20 @@ include '../dashboard/include/connect.php'
         <div id="carouselExample" class="carousel slide">
           <div class="carousel-inner">
             <?php
-            $sql = "select user_name,job,Commentaire from testimonials left join users on testimonials.ID_user = users.ID_user limit 3";
+            $sql = "select userimage,user_name,job,Commentaire from testimonials left join users on testimonials.ID_user = users.ID_user limit 3";
             $testimonial = mysqli_query($con, $sql);
             if (!$testimonial) {
               die("query error");
             }
+            $active = 'active';
             while ($row = mysqli_fetch_assoc($testimonial)) {
-              echo "<div class='carousel-item'>
+              echo "<div class='carousel-item $active'>
               <div class='col-lg-6 col-md-6 col-12 mx-auto '>
                 <div class='card category-card-style  my-4'>
                   <div class='card-body m-4 '>
                     <div class='d-flex  justify-content-between card-flex'>
-                      <div class='d-flex align-items-center m-3'>
-                        <img src='images/fatiha.svg' alt='' class='rounded-circle avatar-xl mb-3 mb-lg-0 '>
+                      <div class='d-flex align-items-center m-3' style='max-width: 30%;'>
+                        <img src='images/$row[userimage]' alt='' class='rounded-circle avatar-xl mb-3 mb-lg-0 ' style='max-width: 90%;' >
                       </div>
                       <div class=''>
                         <h4 class='mb-0'>$row[user_name]</h4>
@@ -670,71 +601,10 @@ include '../dashboard/include/connect.php'
                 </div>
               </div>
             </div>";
+            $active = '';
             }
             ?>
-            <div class="carousel-item active ">
-              <div class="col-lg-6 col-md-6 col-12 mx-auto ">
-                <div class="card category-card-style  my-4">
-                  <div class="card-body m-4 ">
-                    <div class="d-flex card-flex justify-content-between">
-                      <div class="d-flex align-items-center m-3">
-                        <img src="images/dizzy.svg" alt="" class="rounded-circle avatar-xl mb-3 mb-lg-0 ">
-                      </div>
-                      <div class="">
-                        <h4 class="mb-0">Dizzy Dros</h4>
-                        <p class="mb-0 fs-6">Artist</p>
-                        <i class="fa-solid fa-quote-left fa-xl" style="color: #ff7300;"></i>
-                        <p>I recently used their services, and I'm incredibly satisfied. The team was responsive, professional, and the final product exceeded my expectations. I highly recommend them!
-                        </p>
-                        <i class="fa-solid fa-quote-left fa-rotate-180 fa-xl" style="color: #ff7300;"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="col-lg-6 col-md-6 col-12 mx-auto ">
-                <div class="card category-card-style  my-4">
-                  <div class="card-body m-4 ">
-                    <div class="d-flex  justify-content-between card-flex">
-                      <div class="d-flex align-items-center m-3">
-                        <img src="images/fatiha.svg" alt="" class="rounded-circle avatar-xl mb-3 mb-lg-0 ">
-                      </div>
-                      <div class="">
-                        <h4 class="mb-0">Fatiha Lacrim</h4>
-                        <p class="mb-0 fs-6">Ceo Haribo</p>
-                        <i class="fa-solid fa-quote-left fa-xl" style="color: #ff7300;"></i>
-                        <p>I've been a loyal customer for years. The quality of their services is outstanding, and they always go the extra mile to meet our needs. Truly remarkable!
-                        </p>
-                        <i class="fa-solid fa-quote-left fa-rotate-180 fa-xl" style="color: #ff7300;"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="col-lg-6 col-md-6 col-12 mx-auto ">
-                <div class="card category-card-style  my-4">
-                  <div class="card-body m-4 ">
-                    <div class="card-flex d-flex justify-content-between card-flex">
-                      <div class="d-flex align-items-center m-3">
-                        <img src="images/carouselimg.svg" alt="" class="rounded-circle avatar-xl mb-3 mb-lg-0 ">
-                      </div>
-                      <div class="">
-                        <h4 class="mb-0">Goch Tavn</h4>
-                        <p class="mb-0 fs-6">Founder 4011</p>
-                        <i class="fa-solid fa-quote-left fa-xl" style="color: #ff7300;"></i>
-                        <p>I had a fantastic experience with this company. Their products are top-notch, and their customer service is excellent. I highly recommend them!
-                        </p>
-                        <i class="fa-solid fa-quote-left fa-rotate-180 fa-xl" style="color: #ff7300;"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
           <a class="carousel-control-prev " href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
