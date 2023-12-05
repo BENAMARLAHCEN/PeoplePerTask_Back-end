@@ -20,23 +20,22 @@ $user = mysqli_fetch_assoc($result);
     <div class="container-xl px-4 mt-4">
         <?php require_once 'include/nav.php'  ?>
 
-        <hr class="mt-0 mb-4">
         <div class="row">
             <div class="col-xl-4">
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
 
-                        <img class="img-account-profile rounded-circle mb-2" src="../uploaded/<?= $user['userimage'] ?>" alt>
+                        <img class="img-account-profile rounded-circle mb-2" id="image_use"  src="../uploaded/<?= $_SESSION['image'] ?>" alt>
 
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
-                            <div class="btn btn-primary">
-                                Upload new image
-                                <input class="image_use" type="file" name="userimage">
+                        <input id="img_input" onchange="change()" class="d-none" type="file" name="userimage">
+                            <div class="btn btn-primary" id="save" style="display: none;">
+                            <input class="btn btn-primary"  type="submit" name="editimage" value="Save image" >
                             </div>
-                            <input class="btn btn-primary" type="submit" name="editimage" value="Save image">
                         </form>
+                      
                     </div>
                 </div>
             </div>
@@ -105,7 +104,7 @@ $user = mysqli_fetch_assoc($result);
 
                             <div class="mb-3">
                                 <label class="small mb-1">Location</label>
-                                <select class="form-control" name="city">
+                                <select class="form-control" name="City">
                                     <option <?php if ($user['City'] == null) {
                                                 echo 'selected';
                                             } ?> disabled>Enter your location</option>
@@ -129,7 +128,7 @@ $user = mysqli_fetch_assoc($result);
                                 </div>
                             </div>
 
-                            <input class="btn btn-primary" type="saveChange" value="Save changes">
+                            <input class="btn btn-primary" type="submit" name="saveChange" value="Save changes">
                         </form>
                     </div>
                 </div>
@@ -138,6 +137,7 @@ $user = mysqli_fetch_assoc($result);
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/profile.js"></script>
 
     </script>
 </body>
