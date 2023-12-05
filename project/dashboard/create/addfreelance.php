@@ -6,7 +6,7 @@
 <?php
 $active_overview = '';
 $active_users = '';
-$active_freelances = 'active';
+$active_ = 'active';
 $active_testimonials = '';
 $active_project = '';
 $active_contact = '';
@@ -45,7 +45,7 @@ if (isset($_POST['addfrelancer'])) {
       break;
     }
 
-    header('location:../freelances.php');
+    header('location:../freelance.php');
     exit;
   } while (false);
 }

@@ -49,20 +49,20 @@ $place = '';
                   }
 
                   while ($row = mysqli_fetch_assoc($user)){
-                    echo "
+                    ?>
                     <tr>
-                        <td>$row[ID_user]</td>
-                        <td>$row[user_name]</td>
-                        <td>$row[email]</td>
-                        <td>$row[userPassword]</td>
-                        <td>$row[birthday]</td>
-                        <td>$row[ville] $row[region] $row[PostalCode]</td>
+                        <td><?=$row['ID_user']?></td>
+                        <td><?=$row['user_name']?></td>
+                        <td><?=$row['email']?></td>
+                        <td><?=$row['userPassword']?></td>
+                        <td><?=$row['birthday']?></td>
+                        <td><?=$row['ville']?> <?=$row['region']?> <?=$row['PostalCode']?></td>
                         <td>
-                            <a class='btn btn-primary btn-sm' href='edit.php?id=$row[ID_user]'>Edit</a>
-                            <a class='btn btn-danger btn-sm' href='delete.php?id=$row[ID_user]'>Delete</a>
+                            <a class='btn btn-primary btn-sm' href='edit.php?id=<?=$row['ID_user']?>'>Edit</a>
+                            <a class='btn btn-danger btn-sm' href='delete.php?id=<?=$row['ID_user']?>'>Delete</a>
                         </td>
                     </tr>
-                    ";
+                    <?php
                   }
                   mysqli_close($con);
                 ?>

@@ -1,6 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <?php
+include('./include/adminsession.php');
 $active_overview = '';
 $active_users = '';
 $active_freelances = '';

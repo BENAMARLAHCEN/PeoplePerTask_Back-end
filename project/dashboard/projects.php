@@ -1,9 +1,8 @@
 <?php
 // Start output buffering
 ob_start();
+include('./include/adminsession.php');
 
-// Include necessary files
-include 'include/connect.php';
 include 'include/head.php';
 
 

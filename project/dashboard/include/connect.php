@@ -1,10 +1,10 @@
 <?php $servername = "localhost";
- $username = "root";
+ $userName = "root";
  $password = "";
  $database = "peoplepertask";
  
  // Create connection
- $con = mysqli_connect($servername, $username, $password,$database);
+ $con = mysqli_connect($servername, $userName, $password,$database);
  
  // Check connection
  if (mysqli_connect_error()) {

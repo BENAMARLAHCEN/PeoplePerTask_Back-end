@@ -55,7 +55,6 @@ else {
     $ville = $_POST['city'];
     $postalcode =$_POST['postalcode'];
 
-
     do {
         if (empty($name) || empty($email) || empty($password_) || empty($birthday)|| empty($ville) || empty($postalcode)) {
             $errorMessage = "error";

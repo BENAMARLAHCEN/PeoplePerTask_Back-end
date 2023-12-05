@@ -14,7 +14,7 @@
                         <a href="<?=$place?>users.php" class="sidebar_link"> <img src="<?=$place?>img/agent.svg" alt="">Users</a>
                     </li>
                     <li class="sidebar_item <?=$active_freelances ?>">
-                        <a href="<?=$place?>freelances.php" class="sidebar_link"> <img src="<?=$place?>img/agents.svg" alt="">Freelances</a>
+                        <a href="<?=$place?>freelance.php" class="sidebar_link"> <img src="<?=$place?>img/agents.svg" alt="">Freelances</a>
                     </li>
                     <li class="sidebar_item <?=$active_testimonials?>">
                         <a href="<?=$place?>testimonials.php" class="sidebar_link"><img src="<?=$place?>img/articles.svg" alt="">testimonials</a>

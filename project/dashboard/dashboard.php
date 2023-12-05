@@ -1,6 +1,7 @@
-<?php include('include/connect.php') ?>
 <?php
-
+	include('./include/adminsession.php');
+?>
+<?php
 function get_stats($column, $table)  {
     global $con;
     $sql= "SELECT COUNT(*) AS $column FROM $table";

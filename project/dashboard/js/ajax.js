@@ -12,7 +12,6 @@ function deleteRow(id,table) {
                 location.reload();
                 alert('Category Successfully deleted');
                 $('form').trigger('reset');
-
             },
             error: function(xhr, status, error) {
                 // Handle errors if needed

@@ -10,8 +10,7 @@ function delete_row($table_name,$table_id){
         
         // Delete the row of this id
         $sql = "DELETE FROM $table_name WHERE $table_id = $id";
-        $GLOBALS['data'] = $data= mysqli_query($con,$sql);
-        
+        $GLOBALS['data'] = $data= mysqli_query($con,$sql); 
         // header('location:../'.$location.'.php');
         // exit;
 }

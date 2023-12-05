@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     $row = mysqli_fetch_assoc($freelance);
     
     if (!$row) {
-        header('location:freelances.php');
+        header('location:freelance.php');
         exit;
     }
     $freename = $row["FreelanceName"];
@@ -61,7 +61,7 @@ else {
         }
 
         
-        header('location:../freelances.php');
+        header('location:../freelance.php');
         exit;
     
     } while (true);
@@ -100,7 +100,7 @@ else {
 
           <div class="d-flex w-100 justify-content-center">
             <button type="submit" name="save" class="btn btn-success btn-block mb-4 me-4 ">Save</button>
-            <a class="btn btn-danger btn-block mb-4 " href="<?=$place?>freelances.php">Annuler</a>
+            <a class="btn btn-danger btn-block mb-4 " href="<?=$place?>freelance.php">Annuler</a>
           </div>
         </form>
       </div>

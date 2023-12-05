@@ -1,6 +1,8 @@
-<?php include('include/connect.php')?>
 
-<?php $sql = "SELECT * FROM ville";
+<?php 
+function villes($ville){
+global $con;
+$sql = "SELECT * FROM ville";
 $villes = mysqli_query($con,$sql);
 
 if (!$villes) {
@@ -13,5 +15,6 @@ while ($row = mysqli_fetch_assoc($villes)){
         $selected = 'selected';
     }
     echo "<option ".$selected." value='$row[id]'>$row[ville]</option>";
+}
 }
 ?>

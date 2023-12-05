@@ -2,6 +2,7 @@
 <html lang="en">
 
 <?php 
+include('include/ville.php');
 $active_overview = '';
 $active_users = 'active';
 $active_freelances = '';
@@ -103,7 +104,7 @@ do {
                       <label class="form-label">Ville</label>
                       <select name="city" class="form-control" value="<?php echo $name;?>">
                         <option value="" selected disabled>Choize votre ville</option>
-                        <?php include('include/ville.php')?>
+                        <?php villes(0);?>
                       </select>                      
                     </div>
                     <!-- Message input -->
