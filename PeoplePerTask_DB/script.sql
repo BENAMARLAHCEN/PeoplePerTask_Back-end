@@ -1,226 +1,250 @@
--- Creating the 'peoplepertask' database if it doesn't exist and using it
-CREATE DATABASE IF NOT EXISTS peoplepertask ;
-USE peoplepertask;
-
--- Creating the 'Users' table to store user information
-
-CREATE TABLE IF NOT EXISTS Users(
-ID_user INT NOT NULL AUTO_INCREMENT,
-user_name VARCHAR(25) NOT NULL,
-userPassword VARCHAR(15) NOT NULL,
-email VARCHAR(50) NOT NULL,
-birthday DATE,
-City VARCHAR(255),
-PostalCode VARCHAR(5),
-PRIMARY KEY (ID_user)
-);
-
--- Inserting sample data into the 'users' table
-
-INSERT INTO users(user_name,userPassword,email,birthday,City,PostalCode)
-VALUES ('lahcen ben','ben2020','lahcen.ben3@gmail.com','2002-02-02','Alnif','52425'),
-('abdlghani','lghani99','ayt.tamghart@gmail.com','2001-01-01','tinghir','54425'),
-('Rached','dhijd34','duiu.ben3@gmail.com','2000-12-22','Ouarzazat','59825'),
-('Morad','enihd3','morad.oziki@gmail.com','2001-04-02','Alnif','52245'),
-('Nasr','judfo6-','lahcen.lonis@gmail.com','2001-10-07','Rabat','34565');
-
--- CRUD operations on the 'Users' table
-
--- Updating the email of a user with ID_user = 3
-UPDATE users
-SET email = 'rachid.zazate@gmail.com'
-WHERE ID_user = 3;
-
--- Deleting a user with ID_user = 5
-DELETE FROM users WHERE ID_user = 5;
-
-ALTER TABLE users
-RENAME COLUMN user_name TO userName;
-
--- Creating the 'freelance' table to store freelancer details
-
-CREATE TABLE IF NOT EXISTS freelance(
-id INT NOT NULL AUTO_INCREMENT,
-FreelanceName VARCHAR(25) NOT NULL,
-skills VARCHAR(100),
-ID_user INT NOT NULL UNIQUE,
-PRIMARY KEY (id),
-FOREIGN KEY (ID_user) REFERENCES users(ID_user) ON DELETE CASCADE
-);
-
--- Inserting sample data into the 'freelance' table
-
-INSERT INTO freelance(FreelanceName,skills,ID_user)
-VALUES ('darkman','ux/ui',4),
-('mikehurley', 'Web Development, Graphic Design', 1),
-('weblinkbuilding', 'Content Writing, SEO', 2),
-('GINSAN', 'Mobile App Development, UI/UX Design', 3),
-('guhgèu', 'SEO and Web Design Experts', 5);
-
-
--- Creating the 'testimonials' table to store user testimonials
-
-CREATE TABLE IF NOT EXISTS testimonials(
-id INT NOT NULL AUTO_INCREMENT,
-Commentaire VARCHAR(200) NOT NULL,
-ID_user INT,
-PRIMARY KEY (id),
-FOREIGN KEY (ID_user) REFERENCES users(ID_user) ON DELETE SET NULL
-);
-
-
--- Inserting sample data into the 'testimonials' table
-
-INSERT INTO testimonials(Commentaire,ID_user)
-VALUES 
-    ('Great work!', 1),
-    ('Very professional.', 2),
-    ('Highly recommended.', 3),
-    ('Highly recommended freelancer.', 4),
-    ('Great work ethics.', 4),
-    ('Very professional work.', 1);
-
-
--- Creating the 'categories' table to store project categories
-
-CREATE TABLE IF NOT EXISTS categories(
-id INT NOT NULL AUTO_INCREMENT,
-CategoryName VARCHAR(30) NOT NULL,
-PRIMARY KEY (id)
-);
-
-
--- Inserting sample data into the 'categories' table
-
-INSERT INTO categories(CategoryName)
-VALUES 
-    ('Technology'),
-    ('Writing'),
-    ('Design'),
-	 ('Social Media'),
-    ('Illustration'),
-    ('Content Creation'),
-    ('UI/UX Design');
-
-
--- Creating the 'sub_categories' table to store sub-categories linked to main categories
-
-CREATE TABLE IF NOT EXISTS sub_categories(
-id INT NOT NULL AUTO_INCREMENT,
-subName VARCHAR(30) NOT NULL,
-id_category INT NOT NULL,
-PRIMARY KEY (id),
-FOREIGN KEY (id_category) REFERENCES categories(id) ON DELETE CASCADE
-);
-
--- Inserting sample data into the 'sub_categories' table
-
-INSERT INTO sub_categories(subName,id_category)
-VALUES
-    ('Web Development', 1),
-    ('Content Creation', 2),
-    ('Graphic Design', 3),
-    ('Music Production', 4),
-    ('Project Planning', 5),
-    ('Social Media Management', 2),
-    ('Illustration', 3),
-    ('Content Writing', 6);
-    
-
--- Creating the 'projects' table to store project details
-
-CREATE TABLE IF NOT EXISTS projects(
-id INT NOT NULL AUTO_INCREMENT,
-title VARCHAR(50) NOT NULL,
-project_description VARCHAR(200) NOT NULL,
-id_categorie INT,
-id_sub_category INT,
-ID_user INT NOT NULL,
-PRIMARY KEY (id),
-FOREIGN KEY (id_categorie) REFERENCES categories(id) ON DELETE SET NULL,
-FOREIGN KEY (id_sub_category) REFERENCES sub_categories(id) ON DELETE SET NULL,
-FOREIGN KEY (ID_user) REFERENCES users(ID_user) ON DELETE CASCADE
-);
-
-
--- Inserting sample data into the 'projects' table
-
-INSERT INTO projects(title,project_description,id_categorie,id_sub_category,ID_user)
-VALUES 
-    ('E-commerce Website', 'Develop an online store', 1, 1, 1),
-    ('Blog Writing', 'Write SEO optitestimonialstestimonialsmized articles', 2, 2, 2),
-    ('Logo Design', 'Create a company logo', 3, 3, 3),
-    ('Data Analysis Report', 'Analyze and present data in a comprehensive report', 1, 3, 3),
-    ('Professional Photography Session', 'Capture professional photos for a portfolio', 6, 3, 1),
-    ('Business Strategy Consulting', 'Provide strategic advice for business growth', 3, 1, 5),
-    ('Compose Original Music', 'Create original music track for a video game', 2, 4, 3),
-    ('Project Management Assistance', 'Assist in project planning and coordination', 4, 5, 2),
-    ('Social Media Content Creation', 'Create engaging content for social media platforms', 3, 5, 1),
-    ('Illustrate Children''s Book', 'Illustrate characters and scenes for a book', 3, 5, 3);
-
-
--- Creating the 'Offers' table to store offers details
-
-CREATE TABLE IF NOT EXISTS Offers(
-id INT NOT NULL AUTO_INCREMENT,
-amount DECIMAL(10, 2) NOT NULL,
-deadline DATE,
-ID_Freelance INT NOT NULL,
-Id_project INT NOT NULL,
-PRIMARY KEY (id),
-FOREIGN KEY (ID_Freelance) REFERENCES freelance(id) ON DELETE CASCADE,
-FOREIGN KEY (Id_project) REFERENCES projects(id)
-);
-
--- Inserting sample data into the 'Offers' table
-
-INSERT INTO offers(amount, deadline, ID_Freelance, Id_project)
-VALUES 
-    (800.00, '2023-12-31', 1, 1),
-    (400.00, '2023-12-20', 2, 2),
-    (600.00, '2023-12-25', 3, 3),
-    (300.00, '2023-12-18', 4, 4),
-    (1200.00, '2023-12-28', 5, 5);
-
-
 -- phpMyAdmin SQL Dump
--- version 4.1.14
--- http://www.phpmyadmin.net
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
 --
--- Client :  127.0.0.1
--- Généré le :  Mer 28 Janvier 2015 à 23:12
--- Version du serveur :  5.6.17
--- Version de PHP :  5.5.12
+-- Host: localhost:3306
+-- Generation Time: Dec 08, 2023 at 08:33 PM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `peoplepertask`
+--
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `region`
+-- Stand-in structure for view `app_development`
+-- (See below for the actual view)
+--
+CREATE TABLE `app_development` (
+`prject_type` varchar(30)
+,`project_description` varchar(200)
+,`title` varchar(50)
+,`user_name` varchar(25)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
 --
 
-CREATE TABLE IF NOT EXISTS `region` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `region` varchar(40) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+CREATE TABLE `categories` (
+  `id` int NOT NULL,
+  `CategoryName` varchar(30) NOT NULL,
+  `image` varchar(256) DEFAULT NULL,
+  `description` text,
+  `category_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Contenu de la table `region`
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `CategoryName`, `image`, `description`, `category_id`) VALUES
+(2, 'Music', 'categoryMicrophone.svg', 'Audio ,Vidéo music', NULL),
+(3, 'Graphisme', 'categoryillustration.svg', '2D, 3D, Animation graphique, Vidéo, Web design, Logo design,...', NULL),
+(4, 'Marketing & Vente', 'categoryillustration.svg', 'Stratégie Marketing, SEO, Social Media, Commercial, Assistant,...', NULL),
+(5, 'Photographer', 'categoryPhotographer.svg', '', NULL),
+(33, 'DEVELOPPEMENT', 'categorycoding.svg', '.Net, PHP, JavaScript, Python, Swift, Java, Cobol,...', NULL),
+(34, 'BDD, Réseau & Cloud', 'categoryillustration.svg', 'Microsoft Azure, Oracle, Amazon, Cisco, Audit, Administration...', NULL),
+(35, 'E-commerce, CMS & ERP', 'categoryillustration.svg', 'Wordpress, Sharepoint, SAP, SAGE, Odoo, Drupal, Joomla,...', NULL),
+(36, 'Rédaction & Traduction', 'categoryillustration.svg', 'Rédaction Fr, Rédaction Ar, Rédaction Eng, Traduction Fr-Eng,...', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `freelance_skills`
+--
+
+CREATE TABLE `freelance_skills` (
+  `id` int NOT NULL,
+  `skills_id` int NOT NULL,
+  `freelance_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `freelance_skills`
+--
+
+INSERT INTO `freelance_skills` (`id`, `skills_id`, `freelance_id`) VALUES
+(14, 30, 41),
+(15, 37, 47),
+(30, 1, 47),
+(31, 35, 47),
+(32, 38, 47);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `offers`
+--
+
+CREATE TABLE `offers` (
+  `id` int NOT NULL,
+  `title` varchar(256) DEFAULT NULL,
+  `description` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `amount` float NOT NULL,
+  `deadline` date DEFAULT NULL,
+  `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `image` varchar(256) DEFAULT NULL,
+  `ID_Freelance` int NOT NULL,
+  `Id_project` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `offers`
+--
+
+INSERT INTO `offers` (`id`, `title`, `description`, `amount`, `deadline`, `detail`, `image`, `ID_Freelance`, `Id_project`) VALUES
+(1, NULL, NULL, 800, '2023-12-31', NULL, NULL, 1, 1),
+(2, NULL, NULL, 400, '2023-12-20', NULL, NULL, 2, 2),
+(3, NULL, NULL, 600, '2023-12-25', NULL, NULL, 3, 3),
+(4, NULL, NULL, 300, '2023-12-18', NULL, NULL, 4, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `projects`
+--
+
+CREATE TABLE `projects` (
+  `id` int NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `project_description` varchar(200) NOT NULL,
+  `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'data.jpeg',
+  `creationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `budget` float NOT NULL,
+  `budget_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `currency` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `id_categorie` int DEFAULT NULL,
+  `id_sub_category` int DEFAULT NULL,
+  `freelance_id` int DEFAULT NULL,
+  `ID_user` int NOT NULL,
+  `deadline` date DEFAULT NULL,
+  `status` enum('Y','N') NOT NULL DEFAULT 'N'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `projects`
+--
+
+INSERT INTO `projects` (`id`, `title`, `project_description`, `detail`, `image`, `creationDate`, `budget`, `budget_type`, `currency`, `id_categorie`, `id_sub_category`, `freelance_id`, `ID_user`, `deadline`, `status`) VALUES
+(1, 'E-commerce Website', 'Develop an online store', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 3, NULL, 43, 1, NULL, 'N'),
+(2, 'Blog Writing', 'Write SEO optitestimonialstestimonialsmized articles', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 2, 2, NULL, 2, NULL, 'N'),
+(3, 'Logo Design', 'Create a company logo', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 3, 3, NULL, 3, NULL, 'N'),
+(4, 'Data Analysis Report', 'Analyze and present data in a comprehensive report', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 4, 3, NULL, 3, NULL, 'N'),
+(5, 'Professional Photography Session', 'Capture professional photos for a portfolio', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 4, 3, NULL, 1, NULL, 'N'),
+(7, 'Compose Original Music', 'Create original music track for a video game', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 2, 4, NULL, 3, NULL, 'N'),
+(8, 'Project Management Assistance', 'Assist in project planning and coordination', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 4, 5, NULL, 2, NULL, 'N'),
+(10, 'Illustrate Children\s Book', 'Illustrate characters and scenes for a book', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 3, 5, NULL, 3, NULL, 'N'),
+(11, 'Cumque voluptatem A', 'Amet sequi incididu', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 35, 4, NULL, 12, NULL, 'N'),
+(15, 'Eaque fugit sequi o', 'Sed eligendi labore ', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 2, 3, NULL, 3, NULL, 'N'),
+(16, 'Eaque fugit sequi o', 'Sed eligendi labore ', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 2, 3, NULL, 3, NULL, 'N'),
+(17, 'Commodo blanditiis r', 'Qui temporibus recus', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 4, 6, NULL, 1, NULL, 'N'),
+(18, 'Commodo blanditiis r', 'Qui temporibus recus', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 4, 6, NULL, 1, NULL, 'N'),
+(20, 'Consequatur nostrud ', 'Duis quibusdam et re', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 5, NULL, NULL, 2, NULL, 'N'),
+(25, 'Similique facere fug', 'Dolores consequatur', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 3, 3, NULL, 2, NULL, 'N'),
+(28, 'Quasi assumenda id ', 'Ullam dolor ab iusto', '', 'pro.jpeg', '2023-12-03 16:26:08', 0, '0', '0', 3, 7, NULL, 1, NULL, 'N'),
+(2345, '456POKJHG', 'DFGHJKLM', 'DFGHJKLM%', 'data.jpeg', '2023-12-05 21:40:42', 55, 'FHH', '£', 33, 3, 19, 9, '2023-12-05', 'Y'),
+(2346, 'Ducimus aute volupt', 'Eos est minus aliqu', '<p>Hello, World!</p>', 'data.jpeg', '2023-12-05 22:00:54', 37, 'price', 'EUR', 3, 3, NULL, 46, '1984-02-15', 'N'),
+(2347, 'Et incidunt quasi v', 'Eos minus ut est v', '<p>Hello, World!</p>', 'data.jpeg', '2023-12-05 22:00:59', 47, 'price', 'USA', 3, 3, NULL, 46, '2016-07-04', 'N'),
+(2348, 'Voluptate modi dolor', 'Est mollitia fugiat', '<p><span style=\"text-decoration: underline;\">Hello, World!</span></p>\r\n<p><span style=\"text-decoration: underline;\">dsfuyiozds*ded</span></p>\r\n<p><span style=\"text-decoration: underline;\"><strong>sdfchizesokdc</strong></span></p>\r\n<p>ezsdxyuciqsw</p>', 'data.jpeg', '2023-12-05 22:02:05', 2, 'price', 'USA', 3, 3, NULL, 46, '1994-02-27', 'N'),
+(2349, 'Consequatur Laboris', 'Numquam quam rerum e', '<p>Hello, World!</p>', '3fbe7f40d9a09f71248e684d07419eca.jpg', '2023-12-05 22:15:25', 13, 'price', 'USA', 3, 3, NULL, 46, '1984-04-12', 'N'),
+(2350, 'Consequatur Laboris', 'Numquam quam rerum e', '<p class=\"p-5\">Hello, World!</p>', 'data.jpeg', '2023-12-05 22:22:42', 13, 'price', 'USA', 3, 3, NULL, 46, '1984-04-12', 'N'),
+(2351, 'Eveniet voluptas et', 'Qui ea repellendus x\r\nsgxjkhjw', '<p>Hello, World!</p>\r\n<p><strong>sguhjhqws</strong></p>\r\n<p><strong>sfqsghjxklmwckb sdxklcb oudsx&nbsp;</strong></p>\r\n<p><strong>cxcv&nbsp;</strong></p>\r\n<p><strong>sdcx&nbsp;</strong></p>\r\n<p><strong>df g dddddddddddvsdjbc nsdjkbc bkjncxljbc sl k hbksxc</strong></p>\r\n<p><strong>sdxjhbci ndslkb kcbkj sdjxknckj dskjx</strong></p>', 'js.jpeg', '2023-12-06 16:31:24', 24, 'hour', 'USA', 3, 3, NULL, 46, '1985-06-04', 'N'),
+(2352, 'A dolore aut hic ali', 'Harum ex iste aut es', 'Est ea cupiditate in', 'java.jpeg', '2023-12-06 16:31:49', 25, 'price', 'EUR', 3, 3, NULL, 46, '2022-05-17', 'N'),
+(2355, 'sdfg', 'sdfgh', '<p>Hello, World!</p>\r\n<p>sdfgg</p>\r\n<p>dsfdgfhgjg</p>', 'java.jpeg', '2023-12-06 22:28:33', 234, 'hour', 'USA', 3, 3, NULL, 48, '2023-11-28', 'N'),
+(2356, 'qsdfg', 'sdfghjk', '<p>Hello, World!</p>', 'tr.jpeg', '2023-12-06 23:00:04', 4567, 'price', 'USA', 3, 3, NULL, 48, '2023-11-29', 'N'),
+(2357, 'f', 'fgh', '<p>Hello, World!</p>', 'tr.jpeg', '2023-12-06 23:01:35', 345, 'price', 'USA', 3, 3, 47, 48, '2023-12-22', 'Y'),
+(2358, 'Aut debitis ex et co', 'Distinctio Et aut u', '<p>Hello, World!</p>', 'Vector.png', '2023-12-06 23:04:55', 79, 'hour', 'USA', 3, 3, NULL, 46, '2015-10-18', 'N'),
+(2359, 'Quia natus quis repu', 'Iste eius eu expedit', '<p>Hello, World!</p>', 'mb.jpeg', '2023-12-06 23:07:50', 13, 'hour', 'EUR', 3, 3, NULL, 46, '1975-11-24', 'N'),
+(2360, 'bj', 'vbnvbn', '<p>Hello, World!cfgh</p>', 's.jpg', '2023-12-07 16:13:03', 345, 'price', 'USA', 3, 3, 47, 48, '2023-12-12', 'Y');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_tags`
+--
+
+CREATE TABLE `project_tags` (
+  `id` int NOT NULL,
+  `tag_id` int NOT NULL,
+  `project_id` int DEFAULT NULL,
+  `offer_id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `project_tags`
+--
+
+INSERT INTO `project_tags` (`id`, `tag_id`, `project_id`, `offer_id`) VALUES
+(1, 1, 2358, NULL),
+(2, 2, 2358, NULL),
+(3, 1, 2359, NULL),
+(4, 2, 2359, NULL),
+(5, 3, 2359, NULL),
+(6, 4, 2359, NULL),
+(7, 5, 2359, NULL),
+(8, 1, 2360, NULL),
+(9, 2, 2360, NULL),
+(10, 3, 2360, NULL),
+(11, 6, 2360, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `proposal`
+--
+
+CREATE TABLE `proposal` (
+  `id` int NOT NULL,
+  `freelance_id` int NOT NULL,
+  `project_id` int NOT NULL,
+  `sendDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `proposal`
+--
+
+INSERT INTO `proposal` (`id`, `freelance_id`, `project_id`, `sendDate`) VALUES
+(3, 47, 2351, '2023-12-06 22:22:58'),
+(4, 47, 2359, '2023-12-06 23:10:52'),
+(6, 47, 2357, '2023-12-07 18:23:09'),
+(7, 47, 2360, '2023-12-08 12:38:45'),
+(8, 47, 2, '2023-12-08 14:45:09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `region`
+--
+
+CREATE TABLE `region` (
+  `id` int NOT NULL,
+  `region` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `region`
 --
 
 INSERT INTO `region` (`id`, `region`) VALUES
 (1, 'Tanger-Tétouan-Al Hoceïma'),
-(2, 'l''Oriental'),
+(2, 'l\Oriental'),
 (3, 'Fès-Meknès'),
 (4, 'Rabat-Salé-Kénitra'),
 (5, 'Béni Mellal-Khénifra'),
@@ -232,24 +256,205 @@ INSERT INTO `region` (`id`, `region`) VALUES
 (11, 'Laâyoune-Sakia El Hamra'),
 (12, 'Dakhla-Oued Ed Dahab');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skills`
+--
+
+CREATE TABLE `skills` (
+  `id` int NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `skills`
+--
+
+INSERT INTO `skills` (`id`, `name`) VALUES
+(37, 'Angular'),
+(38, 'C++'),
+(39, 'Data Analysis'),
+(41, 'Graphic Design'),
+(34, 'HTML/CSS'),
+(33, 'Java'),
+(30, 'JavaScript'),
+(36, 'Node.js'),
+(1, 'php'),
+(40, 'Project Management'),
+(31, 'Python'),
+(35, 'React'),
+(32, 'SQL'),
+(42, 'UI/UX Design');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `ville`
+-- Table structure for table `sub_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `ville` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ville` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `region` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`region`) REFERENCES region(`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=403 ;
-
+CREATE TABLE `sub_categories` (
+  `id` int NOT NULL,
+  `subName` varchar(30) NOT NULL,
+  `id_category` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Contenu de la table `ville`
+-- Dumping data for table `sub_categories`
+--
+
+INSERT INTO `sub_categories` (`id`, `subName`, `id_category`) VALUES
+(2, 'Content Creation', 2),
+(3, 'Graphic Design', 3),
+(4, 'Music Production', 4),
+(5, 'Project Planning', 5),
+(6, 'Social Media Management', 2),
+(7, 'Illustration', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tags`
+--
+
+CREATE TABLE `tags` (
+  `id` int NOT NULL,
+  `tagName` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tags`
+--
+
+INSERT INTO `tags` (`id`, `tagName`) VALUES
+(3, 'css'),
+(2, 'html'),
+(4, 'javascript'),
+(6, 'ldkcj'),
+(1, 'php'),
+(5, 'sql');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task`
+--
+
+CREATE TABLE `task` (
+  `id` int NOT NULL,
+  `description` varchar(150) NOT NULL,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `user_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `task`
+--
+
+INSERT INTO `task` (`id`, `description`, `status`, `user_id`) VALUES
+(2, 'Finish task update', 'img/warning.svg', 1),
+(3, 'Create new task example', 'img/successnew.svg', 1),
+(4, 'Update cliens report', 'img/default.svg', 1),
+(5, 'Create new task example', 'img/default.svg', 1),
+(6, 'ghjkl', 'img/default.svg', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `testimonials`
+--
+
+CREATE TABLE `testimonials` (
+  `id` int NOT NULL,
+  `Commentaire` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ID_user` int DEFAULT NULL,
+  `date_c` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `testimonials`
+--
+
+INSERT INTO `testimonials` (`id`, `Commentaire`, `ID_user`, `date_c`) VALUES
+(8, 'I had a fantastic experience with this company. Their products are top-notch, and their customer service is excellent. I highly recommend them!', 1, '2023-11-26 00:00:00'),
+(9, 'I recently used their services, and I\'m incredibly satisfied. The team was responsive, professional, and the final product exceeded my expectations. I highly recommend them!', 4, '2023-11-26 00:00:00'),
+(10, 'I\'ve been a loyal customer for years. The quality of their services is outstanding, and they always go the extra mile to meet our needs. Truly remarkable!\r\n\r\n', 2, '2023-11-25 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `ID_user` int NOT NULL,
+  `user_name` varchar(25) NOT NULL,
+  `firstName` varchar(50) DEFAULT NULL,
+  `lastName` varchar(50) DEFAULT NULL,
+  `phone` varchar(25) DEFAULT NULL,
+  `userPassword` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `birthday` date DEFAULT NULL,
+  `City` int DEFAULT NULL,
+  `PostalCode` varchar(5) DEFAULT NULL,
+  `job` varchar(50) DEFAULT NULL,
+  `creationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ROLE` enum('freelance','user','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'user',
+  `userimage` varchar(256) NOT NULL DEFAULT 'profil.jpg',
+  `profile_status` enum('Y','N') DEFAULT NULL,
+  `biography` text,
+  `language` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`ID_user`, `user_name`, `firstName`, `lastName`, `phone`, `userPassword`, `email`, `birthday`, `City`, `PostalCode`, `job`, `creationDate`, `ROLE`, `userimage`, `profile_status`, `biography`, `language`) VALUES
+(1, 'lahcen ben', NULL, NULL, NULL, 'ben2020', 'lahcen.ben3@gmail.com', '2002-02-02', 1, '52425', 'student', '2023-12-01 10:36:28', 'freelance', 'lahcen.jpg', NULL, NULL, NULL),
+(2, 'abdlghani', NULL, NULL, NULL, 'lghani99', 'ayt.tamghart@gmail.com', '2001-01-01', 3, '54425', 'CEO', '2023-12-01 10:36:28', 'freelance', 'abdelghani.jpg', NULL, NULL, NULL),
+(3, 'Rached', NULL, NULL, NULL, 'dhijd34', 'rachid.zazate@gmail.com', '2000-12-22', 6, '59825', 'Artist', '2023-12-01 10:36:28', 'freelance', 'profil.jpg', NULL, NULL, NULL),
+(4, 'Khalid oukha', NULL, NULL, NULL, 'enihd3', 'morad.oziki@gmail.com', '2001-04-02', 23, '52245', NULL, '2023-12-01 10:36:28', 'freelance', 'oukha.jpg', NULL, NULL, NULL),
+(9, 'CDS', NULL, NULL, NULL, 'bhzsu', 'jhxi@HSXIH.SY', '2023-11-30', 87, '23456', NULL, '2023-12-01 10:36:28', 'user', 'profil.jpg', NULL, NULL, NULL),
+(10, 'lahcen', NULL, NULL, NULL, 'jkjed', 'ginsan.ben3@gmail.com', '2023-11-10', 16, '23456', NULL, '2023-12-01 10:36:28', 'user', 'profil.jpg', NULL, NULL, NULL),
+(12, 'solaiman', NULL, NULL, NULL, 'lllllahu', 'javascript_man@gmail.com', '2001-06-27', 155, '52663', NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(19, 'Beatrice Vincent', NULL, NULL, NULL, 'Pa$$w0rd!', 'syzemaqyzo@mailinator.com', '1996-08-04', 9, '2345', NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(20, 'Illiana Chan', NULL, NULL, NULL, 'Pa$$w0rd!', 'kycezo@mailinator.com', '2009-07-26', 324, '3333', NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(21, 'Ivana Delgado', NULL, NULL, NULL, 'Pa$$w0rd!', 'zomyl@mailinator.com', '2010-06-16', 357, '333', NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(23, 'woviqob', NULL, NULL, NULL, 'Pa$$w0rd!', 'risyso@mailinator.com', '1977-02-01', NULL, NULL, NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(24, 'hizegywab', NULL, NULL, NULL, 'Pa$$w0rd!', 'fuxokonuwy@mailinator.com', '1970-06-09', NULL, NULL, NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(25, 'piquna', NULL, NULL, NULL, 'qfsdghjk', 'peqoj@mailinator.com', '1975-10-14', NULL, NULL, NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(26, 'cywofuxip', NULL, NULL, NULL, 'Pa$$w0rd!', 'kizeteh@mailinator.com', '2021-06-27', NULL, NULL, NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(27, 'jifotih', NULL, NULL, NULL, 'Pa$$w0rd!', 'bolewexag@mailinator.com', '2022-02-21', NULL, NULL, NULL, '2023-12-01 10:36:28', NULL, 'profil.jpg', NULL, NULL, NULL),
+(31, 'lahcen.ben', NULL, NULL, NULL, '$2y$10$KFLYS5BQN7YgJxC4VghVe.RdPGDQYeIteqANaTUmjqBNg6R7o4usu', 'ginsan@gmail.com', '2023-11-23', NULL, NULL, NULL, '2023-12-01 10:36:28', 'freelance', 'profil.jpg', NULL, NULL, NULL),
+(32, 'timexuqos', NULL, NULL, NULL, '$2y$10$ljyY7JGrjKttSjmUgGVhTOa026TaYx5OburH8iyFJeE0siRTWCN9G', 'vafunihyw@mailinator.com', '1999-02-15', NULL, NULL, NULL, '2023-12-01 10:36:28', 'freelance', 'profil.jpg', NULL, NULL, NULL),
+(33, 'holekefuni', NULL, NULL, NULL, '$2y$10$dPbFU64yn4pCyh0P0DB9U.YmBAUfyjWdQVbca5omIF.jOvUuPH28O', 'xesabyv@mailinator.com', '2012-02-17', NULL, NULL, NULL, '2023-12-01 10:36:28', 'freelance', 'profil.jpg', NULL, NULL, NULL),
+(34, 'gin2002', NULL, NULL, NULL, '$2y$10$edO/I37iVAQHNxm/pje59.2HcoOstQSeP22LZSInu5eAlZ20ldNCu', 'degodaqa@mailinator.com', '2017-08-09', NULL, NULL, NULL, '2023-12-01 10:36:28', 'admin', 'profil.jpg', NULL, NULL, NULL),
+(35, 'suficywape', NULL, NULL, NULL, '$2y$10$duR6Nf9/xmdcM7q7.Zlbn.45ZKuOWasUv5mcRkVyZcMGCGg0i.kJi', 'kohipyx@mailinator.com', '1992-07-25', NULL, NULL, NULL, '2023-12-01 10:36:28', 'user', 'profil.jpg', NULL, NULL, NULL),
+(36, 'bejokujyr', NULL, NULL, NULL, '$2y$10$YtZQsfYze.xCRuDrH3/EjOUl62uLFHvKpQ2YE9BKUJ7M.ZrQeFFaq', 'kowititeh@mailinator.com', '1990-11-02', 160, NULL, NULL, '2023-12-01 10:36:28', 'admin', 'profil.jpg', NULL, NULL, NULL),
+(37, 'testr', NULL, NULL, NULL, '$2y$10$3K9fT5.WnLVGpiT/DtNk7eeHOZdapxTM3ebuDtUxhEg/h2b3ge2xC', 'silomehipi@mailinator.com', '1996-10-06', NULL, NULL, NULL, '2023-12-01 11:16:52', 'user', 'profil.jpg', NULL, NULL, NULL),
+(38, 'cymoc', NULL, NULL, NULL, '$2y$10$XKHXlyQB5B4D8QuRNd4Ax.jh2Txv.w2pCo19J49H/hsKltmwJVR.m', 'zemiduq@mailinator.com', '2007-07-10', NULL, NULL, NULL, '2023-12-01 12:28:05', 'user', 'profil.jpg', NULL, NULL, NULL),
+(41, 'cuziguhi', 'Holly', 'Henson', '+1 (418) 226-2754', '$2y$10$5NqiU3NRavUsz9nXUET8zuxhM6ytk1R17lUDKxM3RWdsLbsk.dree', 'hilocyk@mailinator.com', '2009-06-18', 155, '52', 'Numquam in iste enim', '2023-12-03 16:53:00', 'admin', '913-1697015825.jpg', NULL, NULL, NULL),
+(43, 'rtyujk', 'GYUY', 'GUYTYU', '234567890', '$2y$10$dPJUnX0xb/eh8lKLM.DVwu0hlzxOF61tTouGaIRwMmwvGaYd/.UCm', 'hzsducikmin@admin.com', '2023-12-30', 75, NULL, NULL, '2023-12-04 15:17:19', 'freelance', 'profil.jpg', NULL, NULL, NULL),
+(46, 'sdfhjkxcvbn,dfghj', 'sdhj', 'sdfghj', '12345678987', '$2y$10$//Ato.hm4R8woFJHeIuI5e1.u56WsBHsSyvk.Ho7MvMYlFXADjsU.', 'lient@client.com', '2023-12-14', 51, '2425', 'sdfghj', '2023-12-04 16:58:22', 'user', 'circle2.png', NULL, 'hcokc ezdnj eoin c ze czejk ocez j co jc oize jk coze sj cioz ejk cio zs cn zdj c ,ksd cj nkes dkj ckn edkjs xcnk kjeds kc jd k jed snx cjk djnx ckj jh kc dkj xkjc je djk xckj ijds xkjc j edhxbc jed', NULL),
+(47, 'jih', NULL, NULL, NULL, '$2y$10$i1/zKTNvCJH4Kvrk4vTEu.kNZ4Bz/hZZZFCM33GsARtfFbY8egno2', 'freelance@freelance.com', '2023-12-28', NULL, NULL, NULL, '2023-12-06 16:54:58', 'freelance', 'profil.jpg', NULL, NULL, NULL),
+(48, 'lahcen2345', 'sdhj', 'sdfghj', '12345678987', '$2y$10$jBcISVqjI1G0k7mc4JIA1O1Zwj.SxOrJkaPTakKLy6tSMcgjn.zh.', 'client@client.com', '2023-11-30', 125, '2425', 'sdfghj', '2023-12-06 22:24:13', 'user', 'profil.webp', NULL, NULL, NULL),
+(49, 'sdfg', NULL, NULL, NULL, '$2y$10$rVPvNYwhfucrEYv9OwTf7.7NZSgVB0UUzNxZlLwTz8Fr7a8JExbWq', 'admin@admin.com', '2023-12-21', NULL, NULL, NULL, '2023-12-08 21:19:31', 'admin', 'profil.jpg', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ville`
+--
+
+CREATE TABLE `ville` (
+  `id` int NOT NULL,
+  `ville` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `region` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ville`
 --
 
 INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
@@ -277,8 +482,8 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (22, 'Loulad', 6),
 (23, 'Oued Zem', 5),
 (24, 'Oulad Abbou', 6),
-(25, 'Oulad H''Riz Sahel', 6),
-(26, 'Oulad M''rah', 6),
+(25, 'Oulad H\'Riz Sahel', 6),
+(26, 'Oulad M\'rah', 6),
 (27, 'Oulad Saïd', 6),
 (28, 'Oulad Sidi Ben Daoud', 6),
 (29, 'Ras El Aïn', 6),
@@ -376,7 +581,7 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (131, 'Moulay Brahim', 7),
 (132, 'Mzouda', 7),
 (133, 'Ounagha', 7),
-(134, 'Sid L''Mokhtar', 7),
+(134, 'Sid L\Mokhtar', 7),
 (135, 'Sid Zouin', 7),
 (136, 'Sidi Abdallah Ghiat', 7),
 (137, 'Sidi Bou Othmane', 7),
@@ -424,14 +629,14 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (179, 'Jorf', 8),
 (180, 'Kehf Nsour', 5),
 (181, 'Kerrouchen', 5),
-(182, 'M''haya', 3),
-(183, 'M''rirt', 5),
+(182, 'M\'haya', 3),
+(183, 'M\'rirt', 5),
 (184, 'Midelt', 8),
 (185, 'Moulay Ali Cherif', 8),
 (186, 'Moulay Bouazza', 5),
 (187, 'Moulay Idriss Zerhoun', 3),
 (188, 'Moussaoua', 3),
-(189, 'N''Zalat Bni Amar', 3),
+(189, 'N\'Zalat Bni Amar', 3),
 (190, 'Ouaoumana', 5),
 (191, 'Oued Ifrane', 3),
 (192, 'Sabaa Aiyoun', 3),
@@ -445,7 +650,7 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (200, 'Tizguite', 3),
 (201, 'Toulal', 3),
 (202, 'Tounfite', 8),
-(203, 'Zaouia d''Ifrane', 3),
+(203, 'Zaouia d\'Ifrane', 3),
 (204, 'Zaïda', 8),
 (205, 'Ahfir', 2),
 (206, 'Aklim', 2),
@@ -531,15 +736,15 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (286, 'Ida Ougnidif', 9),
 (287, 'Ifri', 8),
 (288, 'Igdamen', 9),
-(289, 'Ighil n''Oumgoun', 8),
+(289, 'Ighil n\'Oumgoun', 8),
 (290, 'Imassine', 8),
 (291, 'Inezgane', 9),
 (292, 'Irherm', 9),
-(293, 'Kelaat-M''Gouna', 8),
+(293, 'Kelaat-M\'Gouna', 8),
 (294, 'Lakhsas', 9),
 (295, 'Lakhsass', 9),
 (296, 'Lqliâa', 9),
-(297, 'M''semrir', 8),
+(297, 'M\'semrir', 8),
 (298, 'Massa (Maroc)', 9),
 (299, 'Megousse', 9),
 (300, 'Ouarzazate', 8),
@@ -575,14 +780,14 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (330, 'Bzou', 5),
 (331, 'Dar Oulad Zidouh', 5),
 (332, 'Demnate', 5),
-(333, 'Dra''a', 8),
+(333, 'Dra\'a', 8),
 (334, 'El Ksiba', 5),
 (335, 'Foum Jamaa', 5),
 (336, 'Fquih Ben Salah', 5),
 (337, 'Kasba Tadla', 5),
 (338, 'Ouaouizeght', 5),
 (339, 'Oulad Ayad', 5),
-(340, 'Oulad M''Barek', 5),
+(340, 'Oulad M\'Barek', 5),
 (341, 'Oulad Yaich', 5),
 (342, 'Sidi Jaber', 5),
 (343, 'Souk Sebt Oulad Nemma', 5),
@@ -604,7 +809,7 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (359, 'Khémis Sahel', 1),
 (360, 'Ksar El Kébir', 1),
 (361, 'Larache', 1),
-(362, 'M''diq', 1),
+(362, 'M\'diq', 1),
 (363, 'Martil', 1),
 (364, 'Moqrisset', 1),
 (365, 'Oued Laou', 1),
@@ -648,14 +853,285 @@ INSERT INTO `ville` (`id`, `ville`, `region`) VALUES
 (403, 'Stehat', 1),
 (404, 'Aït Attab', 5);
 
+-- --------------------------------------------------------
+
+--
+-- Structure for view `app_development`
+--
+DROP TABLE IF EXISTS `app_development`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `app_development`  AS SELECT `projects`.`title` AS `title`, `projects`.`project_description` AS `project_description`, `users`.`user_name` AS `user_name`, `sub_categories`.`subName` AS `prject_type` FROM ((`projects` join `sub_categories` on((`projects`.`id_sub_category` = `sub_categories`.`id`))) join `users` on((`projects`.`ID_user` = `users`.`ID_user`)))  ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `freelance_skills`
+--
+ALTER TABLE `freelance_skills`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `freelance_id` (`freelance_id`),
+  ADD KEY `skills_id` (`skills_id`);
+
+--
+-- Indexes for table `offers`
+--
+ALTER TABLE `offers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Id_project` (`Id_project`),
+  ADD KEY `FK_offers_users` (`ID_Freelance`);
+
+--
+-- Indexes for table `projects`
+--
+ALTER TABLE `projects`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_categorie` (`id_categorie`),
+  ADD KEY `id_sub_category` (`id_sub_category`),
+  ADD KEY `ID_user` (`ID_user`),
+  ADD KEY `projects_ibfk_4` (`freelance_id`);
+
+--
+-- Indexes for table `project_tags`
+--
+ALTER TABLE `project_tags`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `tag_id` (`tag_id`),
+  ADD KEY `offer_id` (`offer_id`);
+
+--
+-- Indexes for table `proposal`
+--
+ALTER TABLE `proposal`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `freelance_id` (`freelance_id`),
+  ADD KEY `project_id` (`project_id`);
+
+--
+-- Indexes for table `region`
+--
+ALTER TABLE `region`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `skills`
+--
+ALTER TABLE `skills`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `sub_categories`
+--
+ALTER TABLE `sub_categories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_category` (`id_category`);
+
+--
+-- Indexes for table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tagName` (`tagName`);
+
+--
+-- Indexes for table `task`
+--
+ALTER TABLE `task`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ID_user` (`ID_user`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`ID_user`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `City` (`City`);
+
+--
+-- Indexes for table `ville`
+--
+ALTER TABLE `ville`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `region` (`region`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT for table `freelance_skills`
+--
+ALTER TABLE `freelance_skills`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `offers`
+--
+ALTER TABLE `offers`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `projects`
+--
+ALTER TABLE `projects`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2361;
+
+--
+-- AUTO_INCREMENT for table `project_tags`
+--
+ALTER TABLE `project_tags`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `proposal`
+--
+ALTER TABLE `proposal`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `region`
+--
+ALTER TABLE `region`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `skills`
+--
+ALTER TABLE `skills`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `sub_categories`
+--
+ALTER TABLE `sub_categories`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `tags`
+--
+ALTER TABLE `tags`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `task`
+--
+ALTER TABLE `task`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `ID_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
+--
+-- AUTO_INCREMENT for table `ville`
+--
+ALTER TABLE `ville`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=405;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `freelance_skills`
+--
+ALTER TABLE `freelance_skills`
+  ADD CONSTRAINT `freelance_skills_ibfk_1` FOREIGN KEY (`freelance_id`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `freelance_skills_ibfk_2` FOREIGN KEY (`skills_id`) REFERENCES `skills` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `offers`
+--
+ALTER TABLE `offers`
+  ADD CONSTRAINT `FK_offers_users` FOREIGN KEY (`ID_Freelance`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE,
+  ADD CONSTRAINT `offers_ibfk_2` FOREIGN KEY (`Id_project`) REFERENCES `projects` (`id`);
+
+--
+-- Constraints for table `projects`
+--
+ALTER TABLE `projects`
+  ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`id_categorie`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `projects_ibfk_2` FOREIGN KEY (`id_sub_category`) REFERENCES `sub_categories` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `projects_ibfk_3` FOREIGN KEY (`ID_user`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE,
+  ADD CONSTRAINT `projects_ibfk_4` FOREIGN KEY (`freelance_id`) REFERENCES `users` (`ID_user`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `project_tags`
+--
+ALTER TABLE `project_tags`
+  ADD CONSTRAINT `project_tags_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `project_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `project_tags_ibfk_3` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `proposal`
+--
+ALTER TABLE `proposal`
+  ADD CONSTRAINT `proposal_ibfk_1` FOREIGN KEY (`freelance_id`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `proposal_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sub_categories`
+--
+ALTER TABLE `sub_categories`
+  ADD CONSTRAINT `sub_categories_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `task`
+--
+ALTER TABLE `task`
+  ADD CONSTRAINT `task_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  ADD CONSTRAINT `testimonials_ibfk_1` FOREIGN KEY (`ID_user`) REFERENCES `users` (`ID_user`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`City`) REFERENCES `ville` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ville`
+--
+ALTER TABLE `ville`
+  ADD CONSTRAINT `ville_ibfk_1` FOREIGN KEY (`region`) REFERENCES `region` (`id`);
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-CREATE TABLE task(
-    id INT(4) NOT NULL AUTO_INCREMENT,
-    description VARCHAR(150) NOT NULL,
-    status VARCHAR(25) NOT NULL,
-    PRIMARY KEY (id),
-)
