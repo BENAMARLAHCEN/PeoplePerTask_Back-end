@@ -26,16 +26,17 @@ $user = mysqli_fetch_assoc($result);
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
 
-                        <img class="img-account-profile rounded-circle mb-2" id="image_use"  src="../uploaded/<?= $_SESSION['image'] ?>" alt>
+                        <img class="img-account-profile rounded-circle mb-2" id="image_use" src="../uploaded/<?= $_SESSION['image'] ?>" alt>
 
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
-                        <input id="img_input" onchange="change()" class="d-none" type="file" name="userimage">
+                            <input id="img_input" onchange="change()" class="d-none" type="file" name="userimage">
                             <div class="btn btn-primary" id="save" style="display: none;">
-                            <input class="btn btn-primary"  type="submit" name="editimage" value="Save image" >
+                                <input class="btn btn-primary" type="submit" name="editimage" value="Save image">
                             </div>
                         </form>
-                      
+                        
+
                     </div>
                 </div>
             </div>
@@ -93,12 +94,12 @@ $user = mysqli_fetch_assoc($result);
 
                                 <div class="col-md-6">
                                     <label class="small mb-1">Job</label>
-                                    <input class="form-control" name="job" type="text" placeholder="Enter your organization name" value="<?= $user['job'] ?>">
+                                    <input class="form-control" name="job" type="text" placeholder="Enter your job " value="<?= $user['job'] ?>">
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="small mb-1">Postal Code</label>
-                                    <input class="form-control" name="PostalCode" type="number" placeholder="Enter your organization name" value="<?= $user['PostalCode'] ?>">
+                                    <input class="form-control" name="PostalCode" type="number" placeholder="Enter your postal code" value="<?= $user['PostalCode'] ?>">
                                 </div>
                             </div>
 
@@ -126,6 +127,10 @@ $user = mysqli_fetch_assoc($result);
                                     <label class="small mb-1">Birthday</label>
                                     <input class="form-control" name="birthday" type="date" placeholder="Enter your birthday" value="<?= $user['birthday'] ?>">
                                 </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="small mb-1">About Me</label>
+                                <textarea class="form-control" name="biography" rows="5" placeholder="My Bio" value="<?= $user['biography'] ?>"></textarea>
                             </div>
 
                             <input class="btn btn-primary" type="submit" name="saveChange" value="Save changes">

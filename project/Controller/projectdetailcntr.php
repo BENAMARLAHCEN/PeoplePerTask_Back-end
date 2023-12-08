@@ -1,0 +1,30 @@
+<?php
+include 'dashboard/include/connect.php';
+
+if(!isset($_GET['id'])){
+    echo "<script> alert('this profile is not exist') </script>";
+    header('location: index.php');
+}
+
+$sql = "SELECT title,detail,projects.id as proID,phone,projects.creationDate as pcd,user_name,email,biography,userimage,phone,deadline,status,budget,budget_type,currency,project_description,CategoryName,subName,projects.image as proimage,userimage,ville,region.region as regions,firstName,
+lastName,language FROM projects left join users on users.ID_user = projects.ID_user left join sub_categories on sub_categories.id = projects.id_sub_category left join categories on categories.id = sub_categories.id_category 
+left join ville on users.City = ville.id
+left join region on region.id = ville.region
+WHERE projects.id = $_GET[id] ";
+$result = mysqli_query($con,$sql);
+
+if (mysqli_num_rows($result) == 0) {
+    echo "<script> alert('this profile is not exist') </script>";
+    header('location: index.php');
+}
+$pro = mysqli_fetch_assoc($result);
+
+// $sqli = "select skills.id as skills_id , name from freelance_skills left join skills on skills.id = freelance_skills.skills_id where freelance_skills.freelance_id = $user[ID_user]";
+// $result2 = mysqli_query($con,$sqli);
+// $skils = mysqli_fetch_assoc($result2);
+
+// $sql2 = "SELECT * FROM projects left join categories on projects.id_categorie =categories.id WHERE freelance_id =  $user[ID_user]";
+// $result3 = mysqli_query($con,$sql2);
+// $project = mysqli_fetch_assoc($result3);
+
+?>

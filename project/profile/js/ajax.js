@@ -1,17 +1,17 @@
 //delete  data
-function deleteRow(id,table) {
+function deleteRow(id) {
     if (confirm("are you sure")) {
         $.ajax({
-            url: `http://localhost/test/project/dashboard/delete/deleteItemController.php`,
-            method: "post",
+            url: `http://localhost/test/project/dashboard/delete.php`,
+            method: "get",
             data: {
                 id: id,
-                table: table 
             },
             success: function(data) {
-                location.reload();
+                
                 alert('Category Successfully deleted');
                 $('form').trigger('reset');
+                window.location.href = 'http://localhost/test/project/dashboard/include/logout.php';
             },
             error: function(xhr, status, error) {
                 // Handle errors if needed
@@ -21,4 +21,5 @@ function deleteRow(id,table) {
     }
 }
 
-// 
+
+//
