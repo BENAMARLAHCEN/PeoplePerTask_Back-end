@@ -1,12 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <?php
+session_start();
 $active_overview = '';
 $active_users = '';
 $active_freelances = '';
 $active_testimonials = '';
 $active_project = '';
-$active_contact = '';
 $active_categorie = 'active';
 $place = '';
 

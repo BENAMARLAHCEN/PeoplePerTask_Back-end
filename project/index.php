@@ -88,7 +88,7 @@ include 'dashboard/include/connect.php';
             while ($row = mysqli_fetch_assoc($cat)) {
               echo "
               <div class='col-xl-3 col-lg-4 col-md-6 col-12 mb-3'>
-              <a href='recherch.php?$row[id]' style='text-decoration: none;'>
+              <a href='recherch.php?id=$row[id]' style='text-decoration: none;'>
               <div class='card category-card-style my-2 h-100'>
                 <div class='d-flex justify-content-center '>
                   <img src='./uploaded/$row[image]' alt='category'>

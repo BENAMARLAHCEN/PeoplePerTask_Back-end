@@ -1,10 +1,13 @@
 <?php require_once 'controller/sessionController.php';
 require_once '../dashboard/include/connect.php';
-require_once '../dashboard/include/ville.php';
+require_once '../dashboard/include/region.php';
 require_once 'controller/profileController.php';
 
 
-$sql = "SELECT * FROM users  WHERE ID_user = $id";
+$sql = "SELECT users.*,region.id as regionid FROM users 
+left join ville on ville.id = users.City 
+left join region on region.id = ville.region
+WHERE ID_user = $id";
 $result = mysqli_query($con, $sql);
 $user = mysqli_fetch_assoc($result);
 ?>
@@ -102,14 +105,19 @@ $user = mysqli_fetch_assoc($result);
                                     <input class="form-control" name="PostalCode" type="number" placeholder="Enter your postal code" value="<?= $user['PostalCode'] ?>">
                                 </div>
                             </div>
-
                             <div class="mb-3">
                                 <label class="small mb-1">Location</label>
-                                <select class="form-control" name="City">
-                                    <option <?php if ($user['City'] == null) {
+                                <select onchange="showville(<?=$user['City']?>)" id="region" class="form-control" >
+                                    <option <?php if ($user['regionid'] == null) {
                                                 echo 'selected';
                                             } ?> disabled>Enter your location</option>
-                                    <?php villes($user['City']); ?>
+                                    <?php region($user['regionid']); ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="small mb-1">Location</label>
+                                <select id="ville" class="form-control" name="City">
+                                    
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -143,6 +151,7 @@ $user = mysqli_fetch_assoc($result);
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/profile.js"></script>
+    <script src="../javascript/ajax.js"></script>
 
     </script>
 </body>

@@ -1,3 +1,15 @@
+<?php
+function info($column = ''){
+ if ($_SESSION['role'] == "freelance") {
+    global $freelance;
+    echo $freelance[$column] ;
+ }
+ if ($_SESSION['role'] == "admin") {
+    global $admin;
+    echo $admin[$column] ;
+ }
+}
+?>
 <nav class="navbar justify-content-space-between pe-4 ps-2">
                 <button class="btn open">
                     <span class="navbar-toggler-icon"></span>
@@ -34,15 +46,15 @@
                         </div>
                     </div>
                     <div class="inline"></div>
-                    <div class="name">lahcen Admin</div>
+                    <div class="name"><?php info('user_name')?></div>
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-icon pe-md-0 position-relative" data-bs-toggle="dropdown">
-                                <img src="<?=$place?>img/photo_admin.svg" alt="icon">
+                                <img src="<?=$place?>../uploaded/<?php info('userimage')?>" alt="icon" style="max-width: 2rem;">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end position-absolute">
-                                <a class="dropdown-item" href="#">Profile</a>
-                                <a class="dropdown-item" href="#">Account Setting</a>
+                                <a class="dropdown-item" href="profile.php">Profile</a>
+                                <a class="dropdown-item" href="profile.php">Account Setting</a>
                                 <a class="dropdown-item" href="include/logout.php">Log out</a>
                             </div>
                         </li>

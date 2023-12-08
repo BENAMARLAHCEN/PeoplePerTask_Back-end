@@ -64,18 +64,16 @@ require_once 'controller/projectcontroller.php';
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label class="form-label">Catedory</label>
-                                            <select name="category" class="select2 form-control select2-hidden-accessible" data-select2-placeholder="Select country" data-select2-id="select2-data-1-gy14" tabindex="-1" aria-hidden="true">
+                                            <select onchange="showSubCategory()" id="category" name="category" class="select2 form-control select2-hidden-accessible" data-select2-placeholder="Select country" data-select2-id="select2-data-1-gy14" tabindex="-1" aria-hidden="true">
                                                 <option data-select2-id="select2-data-3-ibs9"></option>
-                                                <option value="3">Afghanistan</option>
+                                                <?php include '../dashboard/include/category.php';?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label class="form-label">Sub-Catedory</label>
-                                            <select name="sub_category" class="select2 form-control select2-hidden-accessible" data-select2-placeholder="Select country" data-select2-id="select2-data-1-gy14" tabindex="-1" aria-hidden="true">
-                                                <option data-select2-id="select2-data-3-ibs9"></option>
-                                                <option value="3">Afghanistan</option>
+                                            <select id="subCategory"  name="sub_category" class="select2 form-control select2-hidden-accessible" data-select2-placeholder="Select country" data-select2-id="select2-data-1-gy14" tabindex="-1" aria-hidden="true">
                                             </select>
                                         </div>
                                     </div>
@@ -184,7 +182,7 @@ require_once 'controller/projectcontroller.php';
             selector: '#mytextarea'
         });
     </script>
-    </script>
+    <script src="../javascript/ajax.js"></script>
 </body>
 
 </html>

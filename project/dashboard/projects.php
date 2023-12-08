@@ -1,13 +1,52 @@
 <?php
 // Start output buffering
 ob_start();
-include('./include/adminsession.php');
+// include('./include/adminsession.php');
+session_start();
+include('include/connect.php');
+
+if (isset($_SESSION['valid'])) {
+
+    if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "freelance") {
+
+        $id = $_SESSION['id'];
+        $query = "SELECT * FROM users WHERE ID_user='$id'";
+        $data = mysqli_query($con, $query);
+        if ($data) {
+            if ($_SESSION['role'] == "freelance") {
+                $freelance = mysqli_fetch_assoc($data);
+            } else {
+                $admin = mysqli_fetch_assoc($data);
+            }
+            //print_r($result);  // to print all data fetch from admin table
+        } else {
+            echo " Something went wrong!";
+        }
+    } else {
+        header("location:../index.php");
+    }
+} else {
+    header("location:../index.php");
+}
+
 
 include 'include/head.php';
-
+if ($_SESSION['role'] == "freelance") {
+    $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
+    LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
+    LEFT JOIN categories on categories.id = sub_categories.id_category where projects.freelance_id = $freelance[ID_user]
+    ";
+    $user = mysqli_query($con, $sql);
+}else{
+$sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
+                   LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
+                   LEFT JOIN categories on categories.id = sub_categories.id_category
+                   ";
+$user = mysqli_query($con, $sql);
+}
 
 ?>
-<?php include 'include/connect.php' ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <?php
@@ -69,31 +108,30 @@ include('include/head.php');
 
                         <?php
 
-                        $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
-                   LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
-                   LEFT JOIN categories on categories.id = sub_categories.id_category
-                   ";
-                        $user = mysqli_query($con, $sql);
-
+                //         $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
+                //    LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
+                //    LEFT JOIN categories on categories.id = sub_categories.id_category
+                //    ";
+                //         $user = mysqli_query($con, $sql);
                         if (!$user) {
                             die("invaled query: " . mysqli_error($con));
                         }
 
                         while ($row = mysqli_fetch_assoc($user)) {
-                            ?>
-                    <tr>
-                        <td><?=$row['id_pro']?></td>
-                        <td><?=$row['title']?></td>
-                        <td><?=$row['project_description']?></td>
-                        <td><?=$row['CategoryName']?></td>
-                        <td><?=$row['subName']?></td>
-                        <td>
-                            <button class='btn btn-primary btn-sm' onclick="updateFreelancer(<?=$row['id_pro']?>)" >Edit</button>
-                            <a class='btn btn-primary btn-sm'  href='edit/editproject.php?id=<?=$row['id_pro']?>'>Edit</a>
-                            <button class='btn btn-danger btn-sm' onclick="deleteRow('<?= $row['id_pro'] ?>','projects')">Delete</button>
-                        </td>
-                    </tr>
-                    <?php
+                        ?>
+                            <tr>
+                                <td><?= $row['id_pro'] ?></td>
+                                <td><?= $row['title'] ?></td>
+                                <td><?= $row['project_description'] ?></td>
+                                <td><?= $row['CategoryName'] ?></td>
+                                <td><?= $row['subName'] ?></td>
+                                <td>
+                                    <button class='btn btn-primary btn-sm' onclick="updateFreelancer(<?= $row['id_pro'] ?>)">Edit</button>
+                                    <a class='btn btn-primary btn-sm' href='edit/editproject.php?id=<?= $row['id_pro'] ?>'>Edit</a>
+                                    <button class='btn btn-danger btn-sm' onclick="deleteRow('<?= $row['id_pro'] ?>','projects')">Delete</button>
+                                </td>
+                            </tr>
+                        <?php
                         }
                         ?>
 

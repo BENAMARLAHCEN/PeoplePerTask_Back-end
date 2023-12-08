@@ -18,12 +18,14 @@
 		{
 			echo " Something went wrong!";
 		}
-    }else{
-		header("location:../pages/index.php");
+    }else if($_SESSION['role'] == "freelace"){
+		header("location:profile.php");
+	}else{
+		header("location:../index.php");
 	}
 	}
 	else    
 	{
-		header("location:../pages/index.php");
+		header("location:../index.php");
 	}
 ?>

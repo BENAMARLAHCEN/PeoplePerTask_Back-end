@@ -79,6 +79,7 @@ $new = mysqli_query($con, $sqli);
                         while ($row = mysqli_fetch_assoc($project)) {
                         ?>
                             <div class="col-md-6">
+                                
                                 <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
                                     <img src="./uploaded/<?= $row['image'] ?>" alt="">
                                     <div class="row align-items-center">
@@ -92,7 +93,7 @@ $new = mysqli_query($con, $sqli);
                                         <div class="col-md-4 op-7">
                                             <div class="row text-center op-7">
                                                 <a class="col px-1 pt-3" href="project.php?id=<?= $row['id'] ?>"> <span class="d-block text-sm">budget</span> <span class="d-block text-sm"><?= $row['budget'] ?>$</span> </a>
-                                                <a class="col px-1" href="project.php?id=<?= $row['id'] ?>"> <i class="ion-ios-eye-outline icon-1x"></i> <span class="d-block text-sm">Read more</span> </a>
+                                                <a class="col px-1" href="project_detail.php?id=<?= $row['id'] ?>"> <i class="ion-ios-eye-outline icon-1x"></i> <span class="d-block text-sm">Read more</span> </a>
                                             </div>
                                         </div>
                                     </div>

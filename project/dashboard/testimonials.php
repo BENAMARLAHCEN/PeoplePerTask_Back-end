@@ -1,8 +1,46 @@
+<?php
+    include('include/connect.php');
+session_start();
+if (isset($_SESSION['valid'])) {
 
+    if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "freelance") {
+
+        $id = $_SESSION['id'];
+        $query = "SELECT * FROM users WHERE ID_user='$id'";
+        $data = mysqli_query($con, $query);
+        if ($data) {
+            if ($_SESSION['role'] == "freelance") {
+                $freelance = mysqli_fetch_assoc($data);
+            } else {
+                $admin = mysqli_fetch_assoc($data);
+            }
+            //print_r($result);  // to print all data fetch from admin table
+        } else {
+            echo " Something went wrong!";
+        }
+    } else {
+        header("location:../index.php");
+    }
+} else {
+    header("location:../index.php");
+}
+if ($_SESSION['role'] == "freelance") {
+                        $sql = "SELECT * FROM testimonials 
+                    LEFT JOIN users on users.ID_user = testimonials.ID_user
+                    where users.ID_user = $freelance[ID_user]
+                    ";
+                        $tes = mysqli_query($con, $sql);
+}else{
+    $sql = "SELECT * FROM testimonials 
+LEFT JOIN users on users.ID_user = testimonials.ID_user
+";
+    $tes = mysqli_query($con, $sql);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include('./include/adminsession.php');
 $active_overview = '';
 $active_users = '';
 $active_freelances = '';
@@ -35,11 +73,7 @@ include('include/head.php');
                     <tbody>
 
                         <?php
-                        include('include/connect.php');
-                        $sql = "SELECT * FROM testimonials 
-                    LEFT JOIN users on users.ID_user = testimonials.ID_user
-                    ";
-                        $tes = mysqli_query($con, $sql);
+                        
 
                         if (!$tes) {
                             die("invaled query: " . mysqli_error($con));

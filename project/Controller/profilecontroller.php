@@ -17,7 +17,7 @@ $user = mysqli_fetch_assoc($result);
 
 $sqli = "select skills.id as skills_id , name from freelance_skills left join skills on skills.id = freelance_skills.skills_id where freelance_skills.freelance_id = $user[ID_user]";
 $result2 = mysqli_query($con,$sqli);
-$skils = mysqli_fetch_assoc($result2);
+// $skils = mysqli_fetch_assoc($result2);
 
 $sql2 = "SELECT * FROM projects left join categories on projects.id_categorie =categories.id WHERE freelance_id =  $user[ID_user]";
 $result3 = mysqli_query($con,$sql2);

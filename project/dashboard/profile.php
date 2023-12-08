@@ -3,19 +3,33 @@
 
 <?php
 session_start();
-if (isset($_SESSION['valid']) && $_SESSION['role'] === 'freelance') {
+if (isset($_SESSION['valid']) &&( $_SESSION['role'] === 'freelance' || $_SESSION['role'] === 'admin')) {
     $id = $_SESSION['id'];
 } else {
-    header("location:../../index.php");
+    header("location:../index.php");
 }
-include '../include/connect.php';
-require_once '../../profile/controller/profileController.php';
-require_once '../include/ville.php';
+include 'include/connect.php';
+require_once '../profile/controller/profileController.php';
+require_once 'include/ville.php';
 
+if(isset($_POST['addskill'])){
+    $id_freelancer=$id;
+    $id_skill = $_POST['new_skills'];
+    $addskill = "INSERT INTO freelance_skills(freelance_id, skills_id)
+    VALUES ('$id_freelancer','$id_skill');";
+    $res=mysqli_query($con,$addskill);
+    header('location: profile.php');
+}
+  
 
 $sql = "SELECT * FROM users  WHERE ID_user = $id";
 $result = mysqli_query($con, $sql);
 $freelance = mysqli_fetch_assoc($result);
+
+$sqli = "SELECT freelance_skills.id as skills_id , name from freelance_skills left join skills on skills.id = freelance_skills.skills_id where freelance_skills.freelance_id = $freelance[ID_user]";
+$result2 = mysqli_query($con, $sqli);
+$sql2 = "SELECT * from skills where id not in (SELECT skills.id from freelance_skills left join skills on skills.id = freelance_skills.skills_id where freelance_skills.freelance_id = $freelance[ID_user])";
+$result3 = mysqli_query($con,$sql2);
 
 $active_overview = '';
 $active_users = '';
@@ -24,7 +38,7 @@ $active_testimonials = '';
 $active_project = '';
 $active_contact = '';
 $active_categorie = '';
-$place = '../';
+$place = '';
 ?>
 
 <head>
@@ -33,15 +47,15 @@ $place = '../';
     <title>Document</title>
     <link rel="stylesheet" href="<?= $place ?>dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
-<?php include('../include/connect.php') ?>
+<?php include('include/connect.php') ?>
 
 <body>
     <div class="wrapper">
-        <?php include('../include/aside.php') ?>
+        <?php include('include/aside.php') ?>
         <div class="main">
-            <?php include('../include/navbar.php') ?>
+            <?php include('include/navbar.php') ?>
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
             <div class="container">
                 <div class="row flex-lg-nowrap">
@@ -55,7 +69,7 @@ $place = '../';
                                                 <div class="col-12 col-sm-auto mb-3">
                                                     <div class="mx-auto" style="width: 140px;">
                                                         <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                                                            <img src="../../uploaded/<?= $freelance['userimage'] ?>" alt="" style="width: 100%;">
+                                                            <img src="../uploaded/<?= $freelance['userimage'] ?>" alt="" style="width: 100%;">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -262,8 +276,22 @@ $place = '../';
                                         <div class="pt-2">
                                             <h4 class="card-title mb-4">My Skill</h4>
                                             <div>
-                                                
+                                                <?php while ($skils = mysqli_fetch_assoc($result2)) {
+                                                ?>
+                                                    <span class="p-2"><?= $skils["name"] ?><button class="btn btn-danger p-0" onclick="deleteRow(<?=$skils['skills_id']?>,'freelance_skills')"><i class="fa-solid fa-minus p-2 "></i></button></span>
+                                                <?php
+                                                } ?>
                                             </div>
+                                            <form action="" method="post">
+                                            <select  class="form-control"  name="new_skills">
+                                                <?php while ($skill = mysqli_fetch_assoc($result3)) {
+                                                    echo "<option value='$skill[id]'>$skill[name]</option>";
+                                                }
+                                                   
+                                                ?>
+                                            </select>
+                                            <input  class="form-control" type="submit" name="addskill" value="Add skills">
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -276,8 +304,10 @@ $place = '../';
 
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="js//ajax.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 
 </html>

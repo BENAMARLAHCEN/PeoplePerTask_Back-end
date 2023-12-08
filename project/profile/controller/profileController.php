@@ -19,7 +19,7 @@ if (isset($_POST['saveChange'])) {
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = "Invalid email address.";
             }
-            $verify_email = mysqli_query($con, "SELECT email FROM users WHERE email = '$email'");
+            $verify_email = mysqli_query($con, "SELECT email FROM users WHERE email = '$email' and (email <> '$_SESSION[valid]')");
             $verify_username = mysqli_query($con, "SELECT user_name FROM users WHERE user_name = '$username'");
             if (mysqli_num_rows($verify_username) != 0) {
                 $errors['username'] = "username that you have entered is already exist!";

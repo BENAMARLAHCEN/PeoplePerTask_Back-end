@@ -1,4 +1,5 @@
-<?php $sql = "SELECT id,CategoryName FROM categories";
+<?php 
+$sql = "SELECT id,CategoryName FROM categories";
 $id_c = mysqli_query($con,$sql);
 
 if (!$id_c) {

@@ -1,3 +1,6 @@
+<?php
+	include('./include/adminsession.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,9 +43,7 @@ $place = '';
 
 
 
-                        $sql = "SELECT * FROM freelance 
-                   LEFT JOIN users on users.ID_user = freelance.ID_user
-                   ";
+                        $sql = "SELECT * FROM users where ROLE = 'freelance' ";
                         $user = mysqli_query($con, $sql);
 
                         if (!$user) {
@@ -52,14 +53,20 @@ $place = '';
                         while ($row = mysqli_fetch_assoc($user)) {
                         ?>
                             <tr>
-                                <td><?= $row['id'] ?></td>
-                                <td><?= $row['FreelanceName'] ?></td>
+                                <td><?= $row['ID_user'] ?></td>
+                                <td><?= $row['user_name'] ?></td>
                                 <td><?= $row['email'] ?></td>
                                 <td><?= $row['userPassword'] ?></td>
-                                <td><?= $row['skills'] ?></td>
+                                <td><?php 
+                                $sql = "SELECT * FROM freelance_skills LEFT JOIN skills ON freelance_skills.skills_id = skills.id WHERE freelance_skills.freelance_id = $row[ID_user]";
+                                $result = mysqli_query($con,$sql);
+                                while ($skill = mysqli_fetch_assoc($result)) {
+                                    echo $skill['name'].",";
+                                }
+                                ?></td>
                                 <td>
-                                    <a class='btn btn-primary btn-sm' href='edit/editfreelance.php?id=<?= $row['id'] ?>'>Edit</a>
-                                    <button class='btn btn-danger btn-sm' onclick="deleteRow('<?= $row['id'] ?>','freelance')">Delete</button>
+                                    <a class='btn btn-primary btn-sm' href='edit/editfreelance.php?id=<?= $row['ID_user'] ?>'>Edit</a>
+                                    <button class='btn btn-danger btn-sm' onclick="deleteRow('<?= $row['ID_user'] ?>','users')">Delete</button>
                                 </td>
                             </tr>
                         <?php

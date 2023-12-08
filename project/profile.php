@@ -143,12 +143,10 @@ require_once './Controller/profilecontroller.php'
                         <div class="pt-2">
                             <h4 class="card-title mb-4">My Skill</h4>
                             <div class="d-flex gap-2 flex-wrap">
-                                <?php while ($skils) {
-
+                                <?php while ($skils =  mysqli_fetch_assoc($result2)) {
                                 ?>
                                     <span class="badge badge-soft-secondary p-2"><?= $skils["name"] ?></span>
                                 <?php
-
                                 } ?>
                             </div>
                         </div>
