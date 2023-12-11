@@ -100,7 +100,7 @@ include 'dashboard/include/connect.php';
               </div>
               </a>
             </div>
-                ";
+              ";
             }
             ?>
       </div>
@@ -125,7 +125,7 @@ include 'dashboard/include/connect.php';
       </div>
       <div class="row z-index-modifier">
         <?php
-        $sql = "SELECT userimage,user_name,creationDate FROM users where ROLE = 'freelance'";
+        $sql = "SELECT * FROM users where ROLE = 'freelance'";
         $result = mysqli_query($con,$sql);
         $f_c_d= "";
         $i=1;
@@ -145,7 +145,7 @@ include 'dashboard/include/connect.php';
                 <h5 class="card-title fw-semibold text-center"><?=$row['user_name']?></h5>
               </div>
 
-              <p class="text-center ">full-Stack Developer</p>
+              <p class="text-center "><?=$row['job']?></p>
               <div class="d-flex align-items-center justify-content-center">
                 <img src="images/Star_light.svg" alt="star for reviews">
                 <img src="images/Star_light.svg" alt="star for reviews">
@@ -154,13 +154,22 @@ include 'dashboard/include/connect.php';
                 <img src="images/Star_lightimpty.svg" alt="">
               </div>
 
-              <p class="card-text text-center">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
+              <p class="card-text text-center"><?=$row['biography']?></p>
               <div class="hero-button d-flex justify-content-center my-2">
-                <a class="btn btn-primary primary-btn-orange" href="#">Get started</a>
+                <a class="btn btn-primary primary-btn-orange" href="profile.php?un=<?=$row['user_name']?>">Get started</a>
               </div>
               <div class="card-footer my-2">
-                <span class="text-body-secondary my-2">UX-UI-Designer-adobe-figma</span>
+                <span class="text-body-secondary my-2">
+                  <?php
+                  $sqli = "select skills.id as skills_id , name from freelance_skills left join skills on skills.id = freelance_skills.skills_id where freelance_skills.freelance_id = $row[ID_user] limit 4";
+                  $result2 = mysqli_query($con,$sqli);
+                  while ($skils =  mysqli_fetch_assoc($result2)) {
+                    ?>
+                        <span class="badge badge-soft-secondary p-2"><?= $skils["name"] ?></span>
+                    <?php
+                    } ?>
+                  
+                </span>
                 <div>
                   <div class="row project-num my-2 d-flex justify-content-between">
                     <div class="col-3  ">

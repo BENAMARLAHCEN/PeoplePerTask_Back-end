@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-$active_overview = '';
-$active_users = '';
-$active_freelances = '';
-$active_testimonials = '';
-$active_project = '';
-$active_contact = 'active';
-$active_categorie = '';
+
 $place = '';
 ?>
 <head>

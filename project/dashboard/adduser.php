@@ -3,13 +3,7 @@
 
 <?php 
 include('include/ville.php');
-$active_overview = '';
-$active_users = 'active';
-$active_freelances = '';
-$active_testimonials = '';
-$active_project = '';
-$active_contact = '';
-$active_categorie = '';
+
 $place = '';
 ?>
 <?php 

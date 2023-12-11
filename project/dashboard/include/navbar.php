@@ -19,7 +19,7 @@ function info($column = ''){
                         <input type="search" class="search " placeholder="Search">
                         <img class="search_icon" src="<?=$place?>img/search.svg" alt="iconicon">
                     </div>
-                    <!-- <img src="<?=$place?>img/search.svg" alt="icon"> -->
+                    
                     <img class="notification" src="<?=$place?>img/new.svg" alt="icon">
                     <div class="card new w-auto">
                         <div class="list-group list-group-light">

@@ -5,13 +5,7 @@
 <html lang="en">
 
 <?php
-$active_overview = '';
-$active_users = '';
-$active_freelances = 'active';
-$active_testimonials = '';
-$active_project = '';
-$active_contact = '';
-$active_categorie = '';
+
 $place = '../';
 ?>
 <?php

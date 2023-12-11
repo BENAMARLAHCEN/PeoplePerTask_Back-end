@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once './Controller/projectdetailcntr.php'
+require_once './Controller/projectdetailcntr.php';
+session_write_close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,8 +26,8 @@ require_once './Controller/projectdetailcntr.php'
       <div class="row align-items-start">
         <div class="col-lg-8 m-15px-tb">
           <article class="article">
-          <div class="article-img">
-              <img class="w-100" src="./uploaded/<?=$pro['proimage']?>" title alt>
+            <div class="article-img">
+              <img class="w-100" src="./uploaded/<?= $pro['proimage'] ?>" title alt>
             </div>
             <div class="article-title">
               <h2><?= $pro['title'] ?></h2>
@@ -44,13 +45,13 @@ require_once './Controller/projectdetailcntr.php'
               <?= $pro['detail'] ?>
             </div>
             <div class="nav tag-cloud">
-              <a href="#">Design</a>
-              <a href="#">Development</a>
-              <a href="#">Travel</a>
-              <a href="#">Web Design</a>
-              <a href="#">Marketing</a>
-              <a href="#">Research</a>
-              <a href="#">Managment</a>
+              <?php
+              $sqli = "SELECT tagName,tags.id as id FROM project_tags p left join tags on tags.id = p.tag_id where project_id = $_GET[id]";
+              $result = mysqli_query($con, $sqli);
+              while ($row1 = mysqli_fetch_assoc($result)) {
+              ?>
+                <a href="./recherch.php?tag=<?= $row1['id'] ?>"><?= $row1['tagName'] ?></a>
+              <?php } ?>
             </div>
           </article>
           <div class="contact-form article-comment">
@@ -83,20 +84,43 @@ require_once './Controller/projectdetailcntr.php'
           <div class="card mt-4">
             <div class="card-body">
               <div>
-                <h4 class="card-title mb-4">Work Experince</h4>
+                <h4 class="card-title mb-4">Freelance Proposal</h4>
                 <ul class="list-unstyled work-activity mb-0">
+                  <?php
+                  if ($pro['status'] == 'Y') {
+                    $sql3 = "SELECT * FROM users WHERE ID_user = $pro[freeid]";
+                    $result3 = mysqli_query($con,$sql3);
+                    $row4 = mysqli_fetch_assoc($result3);
+                    echo "<li class='work-item' data-date='Work by'>
+                    <h6 class='lh-base mb-0'>$row4[user_name]</h6>
+                    <p class='font-size-13 mb-2'>$row4[job]</p>
+                    <p class='mb-0'>It will be as simple as occidental in fact, it will be
+                      Occidental person, it will seem like simplified.</p>
+                  </li>";
+                  }else{
+                    $sql4 = "SELECT * FROM proposal 
+                    LEFT JOIN users ON users.ID_user = proposal.freelance_id 
+                    WHERE project_id = $_GET[id]";
+                    $result4 = mysqli_query($con,$sql4);
+                    if (mysqli_num_rows($result4) == 0) {
+                      echo '<div class="alert alert-warning">
+                      <strong class="default"><i class="fa fa-envelope-o"></i></strong> No one sent proposal to this project.
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    </div>' ;
+                    }else{
+                      while($proposal = mysqli_fetch_assoc($result4)){
+                  ?>
+
                   <li class="work-item" data-date="2020-21">
-                    <h6 class="lh-base mb-0">ABCD Company</h6>
-                    <p class="font-size-13 mb-2">Web Designer</p>
+                    <h6 class="lh-base mb-0"><?= $proposal['user_name'] ?></h6>
+                    <p class="font-size-13 mb-2"><?= $proposal['job'] ?></p>
                     <p>To achieve this, it would be necessary to have uniform grammar, and more
                       common words.</p>
                   </li>
-                  <li class="work-item" data-date="2019-20">
-                    <h6 class="lh-base mb-0">XYZ Company</h6>
-                    <p class="font-size-13 mb-2">Graphic Designer</p>
-                    <p class="mb-0">It will be as simple as occidental in fact, it will be
-                      Occidental person, it will seem like simplified.</p>
-                  </li>
+                  <?php
+                  }}}
+                  ?>
+                  
                 </ul><!-- end ul -->
               </div>
             </div><!-- end card-body -->
@@ -106,7 +130,7 @@ require_once './Controller/projectdetailcntr.php'
           <div class="mt-5 mt-lg-0">
             <div class="card border shadow-none">
               <div class="card-header bg-transparent border-bottom py-3 px-4">
-                <h5 class="font-size-16 mb-0">Project Summary <span class="float-end"><?=$_GET['id']?></span></h5>
+                <h5 class="font-size-16 mb-0">Project Summary <span class="float-end"><?= $_GET['id'] ?></span></h5>
               </div>
               <div class="card-body p-4 pt-2">
 
@@ -136,9 +160,9 @@ require_once './Controller/projectdetailcntr.php'
                       </tr>
                     </tbody>
                     <tr>
-                      <td><button class="btn btn-primary"  <?php if($_SESSION['role'] == 'freelance'){
-                        echo "onclick='sendProposal($_GET[id],$_SESSION[id])'";
-                      } ?>>SEND PROPOSAL</button></td>
+                      <td><button class="btn btn-primary" <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'freelance') {
+                                                            echo "onclick='sendProposal($_GET[id],$_SESSION[id])'";
+                                                          } ?>>SEND PROPOSAL</button></td>
                     </tr>
                   </table>
                 </div>
@@ -212,71 +236,33 @@ require_once './Controller/projectdetailcntr.php'
               <h3>Latest Post</h3>
             </div>
             <div class="widget-body">
-              <div class="latest-post-aside media">
-                <div class="lpa-left media-body">
-                  <div class="lpa-title">
-                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
-                  </div>
-                  <div class="lpa-meta">
-                    <a class="name" href="#">
-                      Rachel Roth
-                    </a>
-                    <a class="date" href="#">
-                      26 FEB 2020
-                    </a>
-                  </div>
-                </div>
-                <div class="lpa-right">
-                  <a href="#">
-                    <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title alt>
-                  </a>
-                </div>
-              </div>
-              <div class="latest-post-aside media">
-                <div class="lpa-left media-body">
-                  <div class="lpa-title">
-                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
-                  </div>
-                  <div class="lpa-meta">
-                    <a class="name" href="#">
-                      Rachel Roth
-                    </a>
-                    <a class="date" href="#">
-                      26 FEB 2020
-                    </a>
+              <?php
+              $sql2 = "SELECT * FROM projects WHERE ID_user = $pro[userID] and projects.id <> $_GET[id]";
+              $result2 = mysqli_query($con, $sql2);
+              while ($row3 = mysqli_fetch_assoc($result2)) {
+              ?>
+                <div class="latest-post-aside media">
+                  <div class="lpa-left media-body">
+                    <div class="lpa-title">
+                      <h5><a href="./project_detail.php?id=<?= $row3['id'] ?>"><?= $row3['title'] ?></a></h5>
+                    </div>
+                    <div class="lpa-meta">
+                      <a class="name" href="#">
+                        <?= $pro['user_name'] ?>
+                      </a>
+                      <a class="date" href="#">
+                        <?= $row3['creationDate'] ?>
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <div class="lpa-right">
-                  <a href="#">
-                    <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title alt>
-                  </a>
-                </div>
-              </div>
-              <div class="latest-post-aside media">
-                <div class="lpa-left media-body">
-                  <div class="lpa-title">
-                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
-                  </div>
-                  <div class="lpa-meta">
-                    <a class="name" href="#">
-                      Rachel Roth
-                    </a>
-                    <a class="date" href="#">
-                      26 FEB 2020
-                    </a>
-                  </div>
-                </div>
-                <div class="lpa-right">
-                  <a href="#">
-                    <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title alt>
-                  </a>
-                </div>
-              </div>
+              <?php }
+              ?>
             </div>
           </div>
 
 
-          <div class="widget widget-tags">
+          <!-- <div class="widget widget-tags">
             <div class="widget-title">
               <h3>Latest Tags</h3>
             </div>
@@ -291,7 +277,7 @@ require_once './Controller/projectdetailcntr.php'
                 <a href="#">Managment</a>
               </div>
             </div>
-          </div>
+          </div> -->
 
         </div>
       </div>

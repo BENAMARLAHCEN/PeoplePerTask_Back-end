@@ -37,7 +37,7 @@
 
         <div class="row">
           <div class="">
-            <form id="contact-form" method="post" action=" " role="form">
+            <form id="contact-form" method="post" action="./Controller/sendmail.php" role="form">
               <div class="row">
                 <div class="col-md-6">
                   <label for="firstname">Prénom <span class="blue">*</span></label>
@@ -47,7 +47,7 @@
 
                 <div class="col-md-6">
                   <label for="lastname">Nom <span class="blue">*</span></label>
-                  <input required type="text" name="name" class="form-control" placeholder="Your Lastname" id="name" value=" ">
+                  <input required type="text" name="lastname" class="form-control" placeholder="Your Lastname" id="name" value=" ">
                   <p class="comments"> </p>
                 </div>
 

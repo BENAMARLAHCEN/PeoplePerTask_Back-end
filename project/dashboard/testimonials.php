@@ -41,13 +41,7 @@ LEFT JOIN users on users.ID_user = testimonials.ID_user
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$active_overview = '';
-$active_users = '';
-$active_freelances = '';
-$active_testimonials = 'active';
-$active_project = '';
-$active_contact = '';
-$active_categorie = '';
+
 $place = '';
 ?>
 <?php

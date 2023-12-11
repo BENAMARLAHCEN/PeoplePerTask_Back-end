@@ -45,14 +45,13 @@ session_start();
         <li class="nav-item">
           <a class="nav-link" href="contact.php">Contact</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="recherch.php">Recherch</a>
+        </li>
+        
       </ul>
       <!--  -->
-      <form class="d-flex input-group w-auto">
-        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-        <span class="input-group-text border-0" id="search-addon">
-          <img src="images/searchicon.svg" alt="">
-        </span>
-      </form>
+      
       <?php
 
 

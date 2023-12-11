@@ -6,7 +6,7 @@ if(!isset($_GET['id'])){
     header('location: index.php');
 }
 
-$sql = "SELECT title,detail,projects.id as proID,phone,projects.creationDate as pcd,user_name,email,biography,userimage,phone,deadline,status,budget,budget_type,currency,project_description,CategoryName,subName,projects.image as proimage,userimage,ville,region.region as regions,firstName,
+$sql = "SELECT projects.freelance_id as freeid,users.ID_user as userID,title,detail,projects.id as proID,phone,projects.creationDate as pcd,user_name,email,biography,userimage,phone,deadline,status,budget,budget_type,currency,project_description,CategoryName,subName,projects.image as proimage,userimage,ville,region.region as regions,firstName,
 lastName,language FROM projects left join users on users.ID_user = projects.ID_user left join sub_categories on sub_categories.id = projects.id_sub_category left join categories on categories.id = sub_categories.id_category 
 left join ville on users.City = ville.id
 left join region on region.id = ville.region

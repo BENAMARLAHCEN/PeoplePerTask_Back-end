@@ -106,7 +106,7 @@ $user = mysqli_fetch_assoc($result);
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="small mb-1">Location</label>
+                                <label class="small mb-1">Region</label>
                                 <select onchange="showville(<?=$user['City']?>)" id="region" class="form-control" >
                                     <option <?php if ($user['regionid'] == null) {
                                                 echo 'selected';
@@ -115,7 +115,7 @@ $user = mysqli_fetch_assoc($result);
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="small mb-1">Location</label>
+                                <label class="small mb-1">City</label>
                                 <select id="ville" class="form-control" name="City">
                                     
                                 </select>

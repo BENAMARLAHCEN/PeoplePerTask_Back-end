@@ -98,7 +98,7 @@ require_once './Controller/profilecontroller.php'
                                                     </div>
                                                     <div class="mb-4">
                                                         <h5 class="mb-1 font-size-17 team-title"><?=$project['CategoryName']?></h5>
-                                                        <p class="text-muted mb-0 team-description"><?=$project['title']?></p>
+                                                        <a href="./project_detail.php?id=<?=$project['id']?>" class="text-muted mb-0 team-description"><?=$project['title']?></a>
                                                     </div>
                                                     <div class="d-flex">
                                                         <div class="avatar-group float-start flex-grow-1 task-assigne">

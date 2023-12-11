@@ -37,26 +37,21 @@ if ($_SESSION['role'] == "freelance") {
     LEFT JOIN categories on categories.id = sub_categories.id_category where projects.freelance_id = $freelance[ID_user]
     ";
     $user = mysqli_query($con, $sql);
-}else{
-$sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
+} else {
+    $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
                    LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
                    LEFT JOIN categories on categories.id = sub_categories.id_category
                    ";
-$user = mysqli_query($con, $sql);
+    $user = mysqli_query($con, $sql);
 }
+
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$active_overview = '';
-$active_users = '';
-$active_freelances = '';
-$active_testimonials = '';
-$active_project = 'active';
-$active_contact = '';
-$active_categorie = '';
+
 $place = '';
 ?>
 <?php
@@ -88,10 +83,17 @@ include('include/head.php');
             </div>";
             }
             ?>
+            <?php
+            if ($_SESSION['role'] == "freelance") {
+            } else {
+            ?>
+                <button type="button" style="width : 10rem;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    ADD PROJECT
+                </button>
+            <?php
+            }
+            ?>
 
-            <button type="button" style="width : 10rem;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                ADD PROJECT
-            </button>
             <div class="Agents">
                 <table id="example" class="table table-striped" style="width:100%">
                     <thead>
@@ -108,11 +110,11 @@ include('include/head.php');
 
                         <?php
 
-                //         $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
-                //    LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
-                //    LEFT JOIN categories on categories.id = sub_categories.id_category
-                //    ";
-                //         $user = mysqli_query($con, $sql);
+                        //         $sql = "SELECT projects.id as id_pro,title,project_description,CategoryName,subName FROM projects 
+                        //    LEFT JOIN sub_categories on sub_categories.id = projects.id_sub_category
+                        //    LEFT JOIN categories on categories.id = sub_categories.id_category
+                        //    ";
+                        //         $user = mysqli_query($con, $sql);
                         if (!$user) {
                             die("invaled query: " . mysqli_error($con));
                         }
@@ -126,9 +128,20 @@ include('include/head.php');
                                 <td><?= $row['CategoryName'] ?></td>
                                 <td><?= $row['subName'] ?></td>
                                 <td>
+                                    <?php
+                                    if ($_SESSION['role'] == "admin") {
+                                    ?>
                                     <button class='btn btn-primary btn-sm' onclick="updateFreelancer(<?= $row['id_pro'] ?>)">Edit</button>
                                     <a class='btn btn-primary btn-sm' href='edit/editproject.php?id=<?= $row['id_pro'] ?>'>Edit</a>
                                     <button class='btn btn-danger btn-sm' onclick="deleteRow('<?= $row['id_pro'] ?>','projects')">Delete</button>
+                                    <?php
+                                    } else {
+                                    ?>
+                                    <button class='btn btn-danger btn-sm' onclick="projectProgress('<?= $row['id_pro'] ?>','projects')">Change project progress</button>
+                                    <?php
+                                    }
+                                    ?>
+                                    
                                 </td>
                             </tr>
                         <?php

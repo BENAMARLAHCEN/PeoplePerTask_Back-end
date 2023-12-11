@@ -11,6 +11,6 @@ while ($row = mysqli_fetch_assoc($id_c)){
                 if ($row['id'] == $cat_id) {
                   $selected = 'selected';
                 }
-    echo "<option " . $selected . " value='$row[id]'>$row[CategoryName]</option>";
+    echo "<option " . $selected . "  value='$row[id]'>$row[CategoryName]</option>";
 }
 ?>

@@ -9,17 +9,10 @@ function get_stats($column, $table)  {
     echo mysqli_fetch_assoc($result)[$column];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$active_overview = 'active';
-$active_users = '';
-$active_freelances = '';
-$active_testimonials = '';
-$active_project = '';
-$active_contact = '';
-$active_categorie = '';
+
 $place = '';
 ?>
 <?php
@@ -110,7 +103,7 @@ if (isset($_POST['addtask'])) {
                                     <div>
                                         <p class="mb-0">Freelance</p>
                                         <div class="mt-4">
-                                            <h3><strong><?php get_stats('freelance','freelance'); ?></strong></h3>
+                                            <h3><strong></strong></h3>
 
                                         </div>
                                     </div>
